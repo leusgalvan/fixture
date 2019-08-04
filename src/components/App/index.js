@@ -1,9 +1,26 @@
-import React from 'react';
-import {withFirebase} from '../Firebase';
-const App = () => {
+import React, { useState, useContext } from 'react';
+import SignIn from '../SignIn';
+import { withStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
+import { FirebaseContext } from '../Firebase';
+
+const styles = theme => ({
+    app: {
+        margin: theme.spacing(3),
+    },
+});
+
+const App = ({ classes }) => {
+    const firebase = useContext(FirebaseContext);
+    const [user, setUser] = useState(firebase.auth.currentUser);
+    const [error, setError] = useState('');
     return (
-        <div>Home</div>
+        <div className={classes.app}>
+            {!user && !error && <SignIn onLoginError={setError} onLoginSuccess={setUser} />}
+            {error && (<Typography variant="body1" color="textPrimary">{error}</Typography>)}
+            {user && (<Typography variant="body1" color="textPrimary">Welcome {user.displayName}!</Typography>)}
+        </div>
     );
 };
 
-export default withFirebase(App);
+export default withStyles(styles)(App);

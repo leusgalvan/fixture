@@ -12,19 +12,41 @@ const config = {
   appId: process.env.REACT_APP_ID
 };
 
+const USER_COLLECTION = 'user';
+
 class Firebase {
   constructor() {
     app.initializeApp(config);
 
     this.auth = app.auth();
     this.db = app.firestore();
-    this.providers = {
-        googleProvider: new app.auth.GoogleAuthProvider(),
-    };
+    this.provider = new app.auth.GoogleAuthProvider();
   }
 
-  // *** Auth API ***
-  doSignOut = () => this.auth.signOut();
+  async login() {
+    const { user } = await this.auth.signInWithPopup(this.provider);
+
+    if (!user) {
+      return { error: 'There was an error in the login proccess.' };
+    }
+
+    await this.db
+      .collection(USER_COLLECTION)
+      .doc(user.uid)
+      .set(
+        {
+          userId: user.uid,
+          displayName: user.displayName,
+        },
+        { merge: true }
+      );
+
+    return { user };
+  }
+
+  logout() {
+    return this.auth.signOut();
+  }
 }
 
 export default Firebase;
