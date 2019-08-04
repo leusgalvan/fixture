@@ -3,6 +3,7 @@ import SignIn from '../SignIn';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { FirebaseContext } from '../Firebase';
+import MainMenu from '../MainMenu';
 
 const styles = theme => ({
     app: {
@@ -18,7 +19,7 @@ const App = ({ classes }) => {
         <div className={classes.app}>
             {!user && !error && <SignIn onLoginError={setError} onLoginSuccess={setUser} />}
             {error && (<Typography variant="body1" color="textPrimary">{error}</Typography>)}
-            {user && (<Typography variant="body1" color="textPrimary">Welcome {user.displayName}!</Typography>)}
+            {user && (<MainMenu />)}
         </div>
     );
 };

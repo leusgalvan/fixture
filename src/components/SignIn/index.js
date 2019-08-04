@@ -9,10 +9,10 @@ const styles = theme => ({
     paper: {
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         margin: "auto",
-        padding: theme.spacing(3),
-        width: 500,
+        padding: theme.spacing(2),
+        width: "50%",
+        alignItems: "center",
     },
 
     title: {
@@ -29,10 +29,10 @@ const SignIn = ({ classes, onLoginSuccess, onLoginError }) => {
     
     return (
         <Paper className={classes.paper}>
-            <Typography className={classes.title} variant="h3" color="textPrimary">
+            <Typography className={classes.title} variant="h5" color="textPrimary">
                 Welcome
             </Typography>
-            <Button fullWidth className={classes.button} variant="contained" color="primary" size="large" onClick={login}>Sign in</Button>
+            <Button className={classes.button} fullWidth variant="contained" color="primary" onClick={login}>Sign in</Button>
         </Paper>
     );
 
