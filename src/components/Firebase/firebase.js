@@ -44,6 +44,10 @@ class Firebase {
     return { user };
   }
 
+  onInitialize(callback) {
+    this.auth.onAuthStateChanged(callback);
+  }
+  
   logout() {
     return this.auth.signOut();
   }
