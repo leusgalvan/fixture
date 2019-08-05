@@ -14,7 +14,7 @@ const App = () => {
     const firebase = useContext(FirebaseContext);
     const [initialized, setInitialized] = useState(false);
     useEffect(() => {
-        firebase.onInitialize(setInitialized);
+        firebase.onInitialize(() => setInitialized(true));
     }, [firebase]);
     return initialized ? (
         <Router>
