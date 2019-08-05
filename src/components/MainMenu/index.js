@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { withStyles } from '@material-ui/core/styles';
 import TournamentIcon from '../TournamentIcon';
 
@@ -15,9 +16,6 @@ const styles = theme => ({
         margin: "auto",
         width: "50%",
         padding: theme.spacing(2),
-    },
-
-    listItem: {
     }
 });
 
@@ -25,17 +23,23 @@ const MainMenu = ({ classes }) => {
     return (
         <Paper className={classes.paper}>
             <List component="nav">
-                <ListItem button className={classes.listItem}>
+                <ListItem button>
                     <ListItemIcon>
                         <GroupIcon />
                     </ListItemIcon>
                     <ListItemText primary="Groups" />
                 </ListItem>
-                <ListItem button className={classes.listItem}>
+                <ListItem button>
                     <ListItemIcon>
                         <TournamentIcon />
                     </ListItemIcon>
                     <ListItemText primary="Tournaments" />
+                </ListItem>
+                <ListItem button>
+                    <ListItemIcon>
+                        <ExitToAppIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout" />
                 </ListItem>
             </List>
         </Paper>
