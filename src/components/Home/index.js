@@ -12,9 +12,13 @@ const Home = () => {
         <>
             {!user && !error && <SignIn onLoginError={setError} onLoginSuccess={setUser} />}
             {error && <Typography variant="body1" color="textPrimary">{error}</Typography>}
-            {user && <MainMenu />}
+            {user && <MainMenu onLogout={logout}/>}
         </>
     );
+    async function logout() {
+        await firebase.logout();
+        setUser(null);
+    }
 };
 
 export default Home;

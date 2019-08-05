@@ -19,7 +19,7 @@ const styles = theme => ({
     }
 });
 
-const MainMenu = ({ classes }) => {
+const MainMenu = ({ classes, onLogout }) => {
     return (
         <Paper className={classes.paper}>
             <List component="nav">
@@ -35,7 +35,7 @@ const MainMenu = ({ classes }) => {
                     </ListItemIcon>
                     <ListItemText primary="Tournaments" />
                 </ListItem>
-                <ListItem button>
+                <ListItem button onClick={onLogout}>
                     <ListItemIcon>
                         <ExitToAppIcon />
                     </ListItemIcon>
