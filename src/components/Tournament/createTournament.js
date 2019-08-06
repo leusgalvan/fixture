@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 const createTournament = selectedTeams => {
-  if (selectedTeams.length === 0) return []
+  if (selectedTeams.length < 2) return []
   const shuffledTeams = _.shuffle(selectedTeams)
   const nrDates = shuffledTeams.length - 1
 
