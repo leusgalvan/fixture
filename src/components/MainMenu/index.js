@@ -24,12 +24,14 @@ const MainMenu = ({ classes, onLogout }) => {
   return (
     <Paper className={classes.paper}>
       <List component='nav'>
-        <ListItem button>
-          <ListItemIcon>
-            <GroupIcon />
-          </ListItemIcon>
-          <ListItemText primary='Groups' />
-        </ListItem>
+        <Link to="/team">
+          <ListItem button>
+            <ListItemIcon>
+              <GroupIcon />
+            </ListItemIcon>
+            <ListItemText primary='Teams' />
+          </ListItem>
+        </Link>
         <Link to='/tournament'>
           <ListItem button>
             <ListItemIcon>

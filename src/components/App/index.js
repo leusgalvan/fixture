@@ -3,6 +3,7 @@ import { LinearProgress, Container } from '@material-ui/core'
 import { FirebaseContext } from '../Firebase'
 import Home from '../Home'
 import Tournament from '../Tournament'
+import Team from '../Team'
 import {
   BrowserRouter as Router,
   Switch,
@@ -27,6 +28,7 @@ const App = () => {
           <Route exact path='/' component={Home} />
           <Route exact path='/mainMenu' component={MainMenu} />
           <Route exact path='/tournament' component={Tournament} />
+          <Route exact path='/team' component={Team} />
           <Route component={() => <Redirect to='/' />} />
         </Switch>
       </Router>
