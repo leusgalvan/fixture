@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { LinearProgress } from '@material-ui/core'
+import { LinearProgress, Container } from '@material-ui/core'
 import { FirebaseContext } from '../Firebase'
 import Home from '../Home'
 import Tournament from '../Tournament'
@@ -21,14 +21,16 @@ const App = () => {
     [firebase]
   )
   return initialized ? (
-    <Router>
-      <Switch>
-        <Route exact path='/' component={Home} />
-        <Route exact path='/mainMenu' component={MainMenu} />
-        <Route exact path='/tournament' component={Tournament} />
-        <Route component={() => <Redirect to='/' />} />
-      </Switch>
-    </Router>
+    <Container>
+      <Router>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/mainMenu' component={MainMenu} />
+          <Route exact path='/tournament' component={Tournament} />
+          <Route component={() => <Redirect to='/' />} />
+        </Switch>
+      </Router>
+    </Container>
   ) : (
     <LinearProgress />
   )
