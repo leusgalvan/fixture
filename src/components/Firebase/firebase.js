@@ -13,6 +13,7 @@ const config = {
 };
 
 const USER_COLLECTION = 'user';
+const TEAM_COLLECTION = 'team';
 
 class Firebase {
   constructor() {
@@ -50,6 +51,11 @@ class Firebase {
   
   logout() {
     return this.auth.signOut();
+  }
+
+  async fetchAllTeams() {
+    const snapshot = await this.db.collection(TEAM_COLLECTION).get()
+    return snapshot.docs.map(doc => doc.data());
   }
 }
 
