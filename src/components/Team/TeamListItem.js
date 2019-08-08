@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 
-const TeamListItem = ({ key, team }) => {
+const TeamListItem = ({ team }) => {
     const [open, setOpen] = useState(false)
 
     const handleClick = () => {
@@ -15,7 +15,7 @@ const TeamListItem = ({ key, team }) => {
 
     return (
         <>
-            <ListItem key={key} button onClick={handleClick}>
+            <ListItem button onClick={handleClick}>
                 <ListItemText primary={team.name} />
                 {open ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
@@ -23,8 +23,8 @@ const TeamListItem = ({ key, team }) => {
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div">
                     {team.members.map((member, i) =>
-                        <ListItem button>
-                            <ListItemText primary={member.displayName} key={i} />
+                        <ListItem button key={i}>
+                            <ListItemText primary={member.displayName} />
                         </ListItem>
                     )}
                 </List>
