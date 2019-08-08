@@ -1,7 +1,7 @@
-import React from 'react'
-import Card from '@material-ui/core/Card'
-import { CardHeader, Typography, CardContent, Grid } from '@material-ui/core'
-import MatchView from './MatchView'
+import React from "react";
+import Card from "@material-ui/core/Card";
+import { CardHeader, Typography, CardContent, Grid } from "@material-ui/core";
+import MatchView from "./MatchView";
 
 const TournamentView = ({ tournament }) => {
   return (
@@ -10,7 +10,9 @@ const TournamentView = ({ tournament }) => {
         <Card key={matchDay.matchDay}>
           <CardHeader
             title={
-              <Typography variant='h4'>Fecha {matchDay.matchDay}</Typography>
+              <Typography variant="h4">
+                Match day {matchDay.matchDay}
+              </Typography>
             }
           />
           <CardContent>
@@ -20,14 +22,14 @@ const TournamentView = ({ tournament }) => {
                   <Grid key={match.match} item xs={12} md={6}>
                     <MatchView match={match} />
                   </Grid>
-                )
+                );
               })}
             </Grid>
           </CardContent>
         </Card>
       ))}
     </>
-  )
-}
+  );
+};
 
-export default TournamentView
+export default TournamentView;
