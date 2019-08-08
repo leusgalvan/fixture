@@ -14,19 +14,19 @@ const Team = (props) => {
     const [searchText, setSearchText] = useState("")
     const [filterByLoggedUser, setFilterByLoggedUser] = useState(false)
     const [teams, setTeams] = useState([])
-    const [open, setOpen] = useState({})
     useEffect(() => {
         firebase.fetchAllTeams().then(allTeams => setTeams(allTeams))
     }, [firebase])
     const filterteams = gs => {
         const user = firebase.auth.currentUser
-        const filteredByUser = filterByLoggedUser ? gs.filter(g => g.members.some(m => m.userId === user.userId)) : gs
+        const filteredByUser = filterByLoggedUser ? gs.filter(g => g.members.some(m => m.userId === user.uid)) : gs
         return searchText ? filteredByUser.filter(g => g.name.includes(searchText)) : filteredByUser
     }
     return (
         <Grid container>
             <Grid item xs={12}>
                 <TextField
+                    fullWidth
                     placeholder="Search…"
                     InputProps={{
                         startAdornment: (
