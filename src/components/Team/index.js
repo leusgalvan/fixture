@@ -4,23 +4,23 @@ import SearchIcon from '@material-ui/icons/Search'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { FirebaseContext } from '../Firebase'
 import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Grid from '@material-ui/core/Grid'
+import TeamListItem from './TeamListItem'
 
 const Team = (props) => {
     const firebase = useContext(FirebaseContext)
     const [searchText, setSearchText] = useState("")
     const [filterByLoggedUser, setFilterByLoggedUser] = useState(false)
     const [teams, setTeams] = useState([])
+    const [open, setOpen] = useState({})
     useEffect(() => {
         firebase.fetchAllTeams().then(allTeams => setTeams(allTeams))
     }, [firebase])
     const filterteams = gs => {
         const user = firebase.auth.currentUser
-        const filteredByUser = filterByLoggedUser ? gs.filter(g => g.members.some(m => m.uid === user.uid)) : gs
+        const filteredByUser = filterByLoggedUser ? gs.filter(g => g.members.some(m => m.userId === user.userId)) : gs
         return searchText ? filteredByUser.filter(g => g.name.includes(searchText)) : filteredByUser
     }
     return (
@@ -52,11 +52,9 @@ const Team = (props) => {
                 />
             </Grid>
             <Grid item xs={12}>
-                <List component="nav">
-                    {filterteams(teams).map((group, i) =>
-                        <ListItem key={i} button>
-                            <ListItemText primary={group.name} />
-                        </ListItem>
+                <List component="div">
+                    {filterteams(teams).map((team, i) =>
+                        <TeamListItem team={team} key={i} />
                     )}
                 </List>
             </Grid>
