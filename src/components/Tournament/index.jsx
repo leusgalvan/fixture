@@ -1,17 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Select from "react-select";
 import Button from "@material-ui/core/Button";
 import createTournament from "./createTournament";
 import TournamentView from "./TournamentView";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
+import { FirebaseContext } from "../Firebase";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from "@material-ui/core/styles";
 
-const data = ["team 1", "team 2", "team 3", "team 4", "team 5", "team 6"].map(
-  x => ({ value: x, label: x })
-);
+const useStyles = makeStyles({
+  root: {
+    textAlign: "center",
+    padding: 20,
+  },
+});
 
 const Tournament = () => {
-  const [selectedTeams, setTeams] = useState([]);
+  const [selectedTeams, setSelectedTeams] = useState([]);
   const [tournament, setTournament] = useState([]);
+  const [availableTeams, setAvailableTeams] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const firebase = useContext(FirebaseContext);
+
+  const classes = useStyles();
+
+  useEffect(() => {
+    const fetchTeamsFromDB = async () => {
+      const data = await firebase.fetchAllTeams();
+      return data;
+    };
+    fetchTeamsFromDB().then(teams => {
+      const teamOptions = teams.map(t => ({ value: t.name, label: t.name }));
+      setAvailableTeams(teamOptions);
+      setLoading(false);
+    });
+  }, [firebase]);
 
   const handleClick = () => {
     const tournament = createTournament(selectedTeams);
@@ -20,23 +44,29 @@ const Tournament = () => {
 
   return (
     <>
-      <Grid container alignItems="center">
-        <Grid item xs={12} sm={6}>
-          <Select
-            isMulti
-            value={selectedTeams}
-            onChange={newTeams => setTeams(newTeams)}
-            name="colors"
-            options={data}
-            className="basic-multi-select"
-            classNamePrefix="select"
-          />
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <Button variant="contained" color="primary" onClick={handleClick}>
-            Generate league
-          </Button>
-        </Grid>
+      <Grid container justify="center">
+        {loading ? (
+          <Grid item className={classes.root}>
+            <CircularProgress className={classes.progress} />
+            <Typography variant="h6">Loading teams...</Typography>
+          </Grid>
+        ) : (
+          <>
+            <Grid className={classes.root} item xs={12} sm={6}>
+              <Select
+                isMulti
+                value={selectedTeams}
+                onChange={newTeams => setSelectedTeams(newTeams)}
+                options={availableTeams}
+              />
+            </Grid>
+            <Grid className={classes.root} item xs={12} sm={6}>
+              <Button variant="contained" color="primary" onClick={handleClick}>
+                Generate league
+              </Button>
+            </Grid>
+          </>
+        )}
       </Grid>
       <TournamentView tournament={tournament} />
     </>
