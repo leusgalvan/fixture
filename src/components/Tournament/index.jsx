@@ -28,14 +28,13 @@ const Tournament = () => {
   useEffect(() => {
     const fetchTeamsFromDB = async () => {
       const data = await firebase.fetchAllTeams();
-      return data;
-    };
-    fetchTeamsFromDB().then(teams => {
-      const teamOptions = teams.map(t => ({ value: t.name, label: t.name }));
+      const teamOptions = data.map(t => ({ value: t.name, label: t.name }));
       setAvailableTeams(teamOptions);
       setLoading(false);
-    });
-  }, [firebase]);
+    };
+    fetchTeamsFromDB();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleClick = () => {
     const tournament = createTournament(selectedTeams);
