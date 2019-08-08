@@ -55,7 +55,7 @@ class Firebase {
 
   async fetchAllTeams() {
     const snapshot = await this.db.collection(TEAM_COLLECTION).get()
-    return snapshot.docs.map(doc => doc.data());
+    return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
   }
 }
 
