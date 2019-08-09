@@ -5,9 +5,11 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { FirebaseContext } from "../Firebase";
 import List from "@material-ui/core/List";
 import Checkbox from "@material-ui/core/Checkbox";
+import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import TeamListItem from "./TeamListItem";
+import { Link } from "react-router-dom";
 import EmptyFeedbackImage from "../Common/EmptyFeedbackImage";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
 
@@ -63,6 +65,7 @@ const Team = props => {
           label="My teams"
         />
       </Grid>
+
       <Grid item xs={12}>
         {!loading && (
           <>
@@ -89,6 +92,14 @@ const Team = props => {
             <CircularProgress />
           </Box>
         )}
+      </Grid>
+
+      <Grid item xs={12}>
+        <Link to="/team/add">
+          <Button variant="contained" color="primary">
+            add
+          </Button>
+        </Link>
       </Grid>
     </Grid>
   );
