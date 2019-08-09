@@ -11,11 +11,11 @@ import { ThemeProvider } from "@material-ui/styles";
 const theme = createMuiTheme({
   palette: {
     primary: purple,
-    secondary: pink,
+    secondary: pink
   },
   status: {
-    danger: "orange",
-  },
+    danger: "orange"
+  }
 });
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>

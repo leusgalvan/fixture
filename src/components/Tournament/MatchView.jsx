@@ -10,8 +10,8 @@ const useStyles = makeStyles(theme => {
       padding: "5%",
       textAlign: "center",
       backgroundColor: theme.palette.secondary["900"],
-      color: "white",
-    },
+      color: "white"
+    }
   };
 });
 const MatchView = ({ match }) => {

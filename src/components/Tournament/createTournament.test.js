@@ -9,7 +9,7 @@ describe("createTournament", () => {
   it("should return one date with one match with two teams", () => {
     const result = createTournament([
       { value: "team 1", label: "team 1" },
-      { value: "team 2", label: "team 2" },
+      { value: "team 2", label: "team 2" }
     ]);
 
     expect(result.length).toEqual(1);
@@ -24,7 +24,7 @@ describe("createTournament", () => {
       { value: "team 1", label: "team 1" },
       { value: "team 2", label: "team 2" },
       { value: "team 3", label: "team 3" },
-      { value: "team 4", label: "team 4" },
+      { value: "team 4", label: "team 4" }
     ]);
 
     expect(result.length).toEqual(3);

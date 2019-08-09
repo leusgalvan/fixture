@@ -1,6 +1,6 @@
-import app from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
+import app from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -12,8 +12,8 @@ const config = {
   appId: process.env.REACT_APP_ID
 };
 
-const USER_COLLECTION = 'user';
-const TEAM_COLLECTION = 'team';
+const USER_COLLECTION = "user";
+const TEAM_COLLECTION = "team";
 
 class Firebase {
   constructor() {
@@ -28,7 +28,7 @@ class Firebase {
     const { user } = await this.auth.signInWithPopup(this.provider);
 
     if (!user) {
-      return { error: 'There was an error in the login proccess.' };
+      return { error: "There was an error in the login proccess." };
     }
 
     await this.db
@@ -37,7 +37,7 @@ class Firebase {
       .set(
         {
           userId: user.uid,
-          displayName: user.displayName,
+          displayName: user.displayName
         },
         { merge: true }
       );
@@ -48,13 +48,13 @@ class Firebase {
   onInitialize(callback) {
     this.auth.onAuthStateChanged(callback);
   }
-  
+
   logout() {
     return this.auth.signOut();
   }
 
   async fetchAllTeams() {
-    const snapshot = await this.db.collection(TEAM_COLLECTION).get()
+    const snapshot = await this.db.collection(TEAM_COLLECTION).get();
     return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
   }
 }

@@ -1,2 +1,2 @@
-export { default } from "./EmptyFeedbackImage"
-export * from "./EmptyFeedbackImage"
+export { default } from "./EmptyFeedbackImage";
+export * from "./EmptyFeedbackImage";
