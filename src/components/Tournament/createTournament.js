@@ -27,8 +27,8 @@ const createTournament = selectedTeams => {
         matchDay: 1,
         matches: _.zip(upper, lower).map((teams, idx) => ({
           match: idx + 1,
-          teams,
-        })),
+          teams
+        }))
       };
       const newMatchDays = matchDays.concat(firstDate);
       return buildMatchDays(
@@ -48,8 +48,8 @@ const createTournament = selectedTeams => {
         matchDay: currentDate,
         matches: _.zip(newUpper, newLower).map((teams, idx) => ({
           match: idx + 1,
-          teams,
-        })),
+          teams
+        }))
       };
       const newDates = matchDays.concat(newDate);
       return buildMatchDays(

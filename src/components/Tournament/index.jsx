@@ -11,8 +11,8 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20,
-  },
+    padding: 20
+  }
 });
 
 const Tournament = () => {
