@@ -1,11 +1,17 @@
 import _ from "lodash";
 
-const createTournament = selectedTeams => {
+const createTournament = (selectedTeams, name) => {
   if (!selectedTeams || selectedTeams.length < 2) return [];
   var shuffledTeams;
   if (selectedTeams.length % 2 !== 0) {
     shuffledTeams = _.shuffle(
-      selectedTeams.concat({ label: "LIBRE", value: "LIBRE" })
+      selectedTeams.concat({
+        id: "LIBRE",
+        members: [],
+        name: "LIBRE",
+        label: "LIBRE",
+        value: "LIBRE",
+      })
     );
   } else {
     shuffledTeams = _.shuffle(selectedTeams);
@@ -22,14 +28,16 @@ const createTournament = selectedTeams => {
     currentDate = 1,
     matchDays = []
   ) => {
+    const buildDate = (number, upper, lower) => ({
+      matchDay: number,
+      matches: _.zip(upper, lower).map((teams, idx) => ({
+        matchNumber: idx + 1,
+        teams,
+        result: "not played",
+      })),
+    });
     if (currentDate === 1) {
-      const firstDate = {
-        matchDay: 1,
-        matches: _.zip(upper, lower).map((teams, idx) => ({
-          match: idx + 1,
-          teams
-        }))
-      };
+      const firstDate = buildDate(1, upper, lower);
       const newMatchDays = matchDays.concat(firstDate);
       return buildMatchDays(
         upper,
@@ -44,13 +52,7 @@ const createTournament = selectedTeams => {
         .concat(lower[0])
         .concat(upper.slice(1, upper.length - 1));
       const newLower = lower.slice(1).concat(upper[upper.length - 1]);
-      const newDate = {
-        matchDay: currentDate,
-        matches: _.zip(newUpper, newLower).map((teams, idx) => ({
-          match: idx + 1,
-          teams
-        }))
-      };
+      const newDate = buildDate(currentDate, upper, lower);
       const newDates = matchDays.concat(newDate);
       return buildMatchDays(
         newUpper,
@@ -64,7 +66,18 @@ const createTournament = selectedTeams => {
     }
   };
 
-  return buildMatchDays(upper, lower, nrDates);
+  const matchDays = buildMatchDays(upper, lower, nrDates);
+  return {
+    id:
+      Math.random()
+        .toString(36)
+        .substring(2, 15) +
+      Math.random()
+        .toString(36)
+        .substring(2, 15),
+    name,
+    schedule: matchDays,
+  };
 };
 
 export default createTournament;
