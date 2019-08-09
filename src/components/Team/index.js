@@ -8,20 +8,28 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Grid from '@material-ui/core/Grid'
 import TeamListItem from './TeamListItem'
+import EmptyFeedbackImage from '../Common/EmptyFeedbackImage';
+import { Box, Typography } from '@material-ui/core';
 
 const Team = (props) => {
     const firebase = useContext(FirebaseContext)
+    const [loading, setLoading] = useState(true)
     const [searchText, setSearchText] = useState("")
     const [filterByLoggedUser, setFilterByLoggedUser] = useState(false)
     const [teams, setTeams] = useState([])
     useEffect(() => {
-        firebase.fetchAllTeams().then(allTeams => setTeams(allTeams))
+        firebase.fetchAllTeams().then(allTeams => {
+            setTeams(allTeams)
+            setLoading(false)
+        })
     }, [firebase])
     const filterteams = gs => {
         const user = firebase.auth.currentUser
         const filteredByUser = filterByLoggedUser ? gs.filter(g => g.members.some(m => m.userId === user.uid)) : gs
         return searchText ? filteredByUser.filter(g => g.name.includes(searchText)) : filteredByUser
     }
+
+    const filteredTeams = filterteams(teams)
     return (
         <Grid container>
             <Grid item xs={12}>
@@ -51,13 +59,26 @@ const Team = (props) => {
                     label="My teams"
                 />
             </Grid>
-            <Grid item xs={12}>
-                <List component="div">
-                    {filterteams(teams).map((team, i) =>
-                        <TeamListItem team={team} key={i} />
-                    )}
-                </List>
-            </Grid>
+            {
+                !loading && 
+                    <Grid item xs={12}>
+                        {
+                            filteredTeams.length > 0 && 
+                            <List component="div">
+                                {
+                                    filteredTeams.map((team, i) =>
+                                        <TeamListItem team={team} key={i} />)
+                                }
+                            </List>
+                        }
+                        {
+                            !filteredTeams.length && <Box textAlign="center" width={1}>
+                                <EmptyFeedbackImage />
+                                <Typography variant="subtitle1">No se encontraron equipos</Typography>
+                            </Box>
+                        }
+                    </Grid>
+            }
         </Grid>
     );
 
