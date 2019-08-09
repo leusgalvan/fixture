@@ -9,7 +9,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import TeamListItem from "./TeamListItem";
 import EmptyFeedbackImage from "../Common/EmptyFeedbackImage";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, CircularProgress } from "@material-ui/core";
 
 const Team = props => {
   const firebase = useContext(FirebaseContext);
@@ -63,25 +63,33 @@ const Team = props => {
           label="My teams"
         />
       </Grid>
-      {!loading && (
-        <Grid item xs={12}>
-          {filteredTeams.length > 0 && (
-            <List component="div">
-              {filteredTeams.map((team, i) => (
-                <TeamListItem team={team} key={i} />
-              ))}
-            </List>
-          )}
-          {!filteredTeams.length && (
-            <Box textAlign="center" width={1}>
-              <EmptyFeedbackImage />
-              <Typography variant="subtitle1">
-                No se encontraron equipos
-              </Typography>
-            </Box>
-          )}
-        </Grid>
-      )}
+      <Grid item xs={12}>
+        {!loading && (
+          <>
+            {filteredTeams.length > 0 && (
+              <List component="div">
+                {filteredTeams.map((team, i) => (
+                  <TeamListItem team={team} key={i} />
+                ))}
+              </List>
+            )}
+            {!filteredTeams.length && (
+              <Box textAlign="center" width={1}>
+                <EmptyFeedbackImage />
+                <Typography variant="subtitle1">
+                  No se encontraron equipos
+                </Typography>
+              </Box>
+            )}
+          </>
+        )}
+
+        {loading && (
+          <Box textAlign="center" w={1} mt="10vh">
+            <CircularProgress />
+          </Box>
+        )}
+      </Grid>
     </Grid>
   );
 };
