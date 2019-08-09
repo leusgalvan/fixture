@@ -9,11 +9,12 @@ const config = {
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_ID
+  appId: process.env.REACT_APP_ID,
 };
 
 const USER_COLLECTION = "user";
 const TEAM_COLLECTION = "team";
+const TOURNAMENT_COLLECTION = "tournament";
 
 class Firebase {
   constructor() {
@@ -37,7 +38,7 @@ class Firebase {
       .set(
         {
           userId: user.uid,
-          displayName: user.displayName
+          displayName: user.displayName,
         },
         { merge: true }
       );
@@ -56,6 +57,13 @@ class Firebase {
   async fetchAllTeams() {
     const snapshot = await this.db.collection(TEAM_COLLECTION).get();
     return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+  }
+
+  async saveTournament(tournament) {
+    const result = await this.db
+      .collection(TOURNAMENT_COLLECTION)
+      .add(tournament);
+    return result;
   }
 }
 
