@@ -4,12 +4,31 @@ import {
   Button,
   TextField,
   CircularProgress,
-  Grid
+  Grid,
+  Paper
 } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
 import SelectableList from "../SelectableList";
+import { withStyles } from "@material-ui/core/styles";
 
-const AddTeam = ({ history }) => {
+const styles = theme => ({
+  paper: {
+    display: "flex",
+    flexDirection: "column",
+    margin: "auto",
+    width: "50%",
+    padding: theme.spacing(2)
+  },
+
+  save: {
+    display: "flex",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: theme.spacing(2)
+  }
+});
+
+const AddTeam = ({ classes, history }) => {
   const firebase = useContext(FirebaseContext);
   const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
@@ -39,51 +58,52 @@ const AddTeam = ({ history }) => {
       name: name,
       members: selectedUserIndexes.map(i => users[i])
     };
+    console.log(newTeam);
     await firebase.addTeam(newTeam);
     history.push("/team");
   };
 
   return (
     <>
-      <Typography variant="h5" color="textPrimary">
-        Team
-      </Typography>
+      <Paper className={classes.paper}>
+        <Typography variant="h5" color="textPrimary">
+          Team
+        </Typography>
 
-      <form onSubmit={onSubmit}>
-        <Grid container>
-          <Grid item xs={12}>
-            <TextField
-              id="name"
-              value={name}
-              onChange={onNameChange}
-              required
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              label="Name"
+        <form id="teamForm" onSubmit={onSubmit}>
+          <TextField
+            id="name"
+            value={name}
+            onChange={onNameChange}
+            required
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            label="Name"
+          />
+          {!loading ? (
+            <SelectableList
+              id="membersList"
+              items={userDisplayNames}
+              selectedIndexes={selectedUserIndexes}
+              onItemClicked={onUserClicked}
             />
-          </Grid>
-          <Grid item xs={12}>
-            {!loading ? (
-              <SelectableList
-                id="membersList"
-                items={userDisplayNames}
-                selectedIndexes={selectedUserIndexes}
-                onItemClicked={onUserClicked}
-              />
-            ) : (
-              <CircularProgress />
-            )}
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" color="primary" type="submit">
-              {submitting ? <CircularProgress /> : "Save"}
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
+          ) : (
+            <CircularProgress />
+          )}
+        </form>
+      </Paper>
+      <Button
+        className={classes.save}
+        variant="contained"
+        color="primary"
+        type="submit"
+        form="teamForm"
+      >
+        {submitting ? <CircularProgress /> : "Save"}
+      </Button>
     </>
   );
 };
 
-export default AddTeam;
+export default withStyles(styles)(AddTeam);
