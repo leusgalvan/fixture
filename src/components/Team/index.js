@@ -92,9 +92,7 @@ const Team = ({ classes }) => {
             {!filteredTeams.length && (
               <Box textAlign="center" width={1}>
                 <EmptyFeedbackImage />
-                <Typography variant="subtitle1">
-                  No se encontraron equipos
-                </Typography>
+                <Typography variant="subtitle1">No teams found</Typography>
               </Box>
             )}
           </>
