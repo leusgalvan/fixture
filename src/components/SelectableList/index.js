@@ -1,7 +1,7 @@
 import React from "react";
 import { List, ListItem, ListItemText } from "@material-ui/core";
 
-const SelectableList = ({ items, selectedIndexes, onItemClicked, classes }) => {
+const SelectableList = ({ items, selectedIndexes, onItemClicked }) => {
   const isSelected = i => selectedIndexes.includes(i);
   console.log();
   return (

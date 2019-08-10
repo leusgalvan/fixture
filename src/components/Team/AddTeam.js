@@ -9,7 +9,7 @@ import {
 import { FirebaseContext } from "../Firebase";
 import SelectableList from "../SelectableList";
 
-const AddTeam = ({ classes, history }) => {
+const AddTeam = ({ history }) => {
   const firebase = useContext(FirebaseContext);
   const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
