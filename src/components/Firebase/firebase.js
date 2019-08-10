@@ -65,6 +65,14 @@ class Firebase {
       .add(tournament);
     return result;
   }
+
+  async fetchTournamentById(idTournament) {
+    const result = await this.db.collection(TOURNAMENT_COLLECTION)
+    .where('id', '==', idTournament)
+    .get();
+
+    return result.docs.map(doc => ({ ...doc.data(), id: doc.id }))[0];;
+  }
 }
 
 export default Firebase;

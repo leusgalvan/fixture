@@ -7,7 +7,7 @@ const Standings = ({ tournament }) => {
     tournament
   ]);
 
-  return <StandingsTable standings={standings} />;
+  return tournament && <StandingsTable standings={standings} />;
 };
 
 export default Standings;

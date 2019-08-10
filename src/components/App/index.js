@@ -12,6 +12,8 @@ import {
 } from "react-router-dom";
 import MainMenu from "../MainMenu";
 import PrivateRoute from "../PrivateRoute";
+import StandingsContainer from "../Standings";
+import ResultsContainer from "../Results";
 
 const App = () => {
   const firebase = useContext(FirebaseContext);
@@ -26,6 +28,8 @@ const App = () => {
           <Route exact path="/" component={Home} />
           <PrivateRoute exact path="/mainMenu" component={MainMenu} />
           <PrivateRoute exact path="/tournament" component={Tournament} />
+          <PrivateRoute exact path="/standings/:idTournament" component={StandingsContainer} />
+          <PrivateRoute exact path="/results/:idTournament" component={ResultsContainer} />
           <PrivateRoute exact path="/team" component={Team} />
           <Route component={() => <Redirect to="/" />} />
         </Switch>
