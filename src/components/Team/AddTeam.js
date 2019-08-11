@@ -4,7 +4,6 @@ import {
   Button,
   TextField,
   CircularProgress,
-  Grid,
   Paper
 } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";

@@ -1,10 +1,20 @@
 import React from "react";
-import { List, ListItem, ListItemText } from "@material-ui/core";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  Box
+} from "@material-ui/core";
+import EmptyFeedbackImage from "../Common/EmptyFeedbackImage";
 
-const SelectableList = ({ items, selectedIndexes, onItemClicked }) => {
+const SelectableList = ({
+  items = [],
+  selectedIndexes = [],
+  onItemClicked = () => {}
+}) => {
   const isSelected = i => selectedIndexes.includes(i);
-  console.log();
-  return (
+  return items && items.length > 0 ? (
     <List variant="div" disablePadding>
       {items.map((item, i) => (
         <ListItem
@@ -17,6 +27,11 @@ const SelectableList = ({ items, selectedIndexes, onItemClicked }) => {
         </ListItem>
       ))}
     </List>
+  ) : (
+    <Box textAlign="center" width={1}>
+      <EmptyFeedbackImage />
+      <Typography variant="subtitle1">No items to display</Typography>
+    </Box>
   );
 };
 
