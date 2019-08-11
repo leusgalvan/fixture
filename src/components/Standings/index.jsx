@@ -31,7 +31,6 @@ const StandingsContainer = ({match}) => {
       }, [match.params.id]);
 
     return (
-        <>
         <Grid container justify={"center"}>
             {tournament ? 
                     <>
@@ -49,7 +48,6 @@ const StandingsContainer = ({match}) => {
                     </>
             }
         </Grid>
-        </>
     );
 }
 

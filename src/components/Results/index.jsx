@@ -31,24 +31,19 @@ const ResultsContainer = ({match}) => {
       }, [match.params.id]);
 
     return (
-        <>
         <Grid container justify={"center"}>
             {tournament ? 
-                <>
                 <Grid item className={classes.root} xs={12}>                    
                     <Typography variant="h2" color="primary">{tournament.name}</Typography>
                     <TournamentView schedule={tournament.schedule} />
                 </Grid>
-                </>
                 : 
-                <>            
                    <Grid item className={classes.root}> 
                         <CircularProgress />
                         <Typography variant="h6">Loading...</Typography>
                     </Grid>
-                </>}
+                }
         </Grid>
-        </>
     );
 }
 

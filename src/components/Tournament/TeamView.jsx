@@ -23,12 +23,10 @@ const TeamView = ({teamName, winner}) => {
             <Typography variant="h5">
                 {teamName}
             </Typography>
-            { winner ? 
+            { winner &&
                 <Typography variant="h6">
                     Winner
                 </Typography> 
-            : 
-                null
             }
       </Paper>
     )
