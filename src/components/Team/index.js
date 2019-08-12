@@ -1,17 +1,37 @@
 import React, { useState, useContext, useEffect } from "react";
+import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import SearchIcon from "@material-ui/icons/Search";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { FirebaseContext } from "../Firebase";
 import List from "@material-ui/core/List";
 import Checkbox from "@material-ui/core/Checkbox";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
 import TeamListItem from "./TeamListItem";
+import { Link } from "react-router-dom";
 import EmptyFeedbackImage from "../Common/EmptyFeedbackImage";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 
-const Team = props => {
+const styles = theme => ({
+  paper: {
+    display: "flex",
+    flexDirection: "column",
+    margin: "auto",
+    width: "50%",
+    padding: theme.spacing(2)
+  },
+
+  fab: {
+    position: "fixed",
+    right: "20%",
+    bottom: theme.spacing(2)
+  }
+});
+
+const Team = ({ classes }) => {
   const firebase = useContext(FirebaseContext);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
@@ -35,8 +55,8 @@ const Team = props => {
 
   const filteredTeams = filterteams(teams);
   return (
-    <Grid container>
-      <Grid item xs={12}>
+    <>
+      <Paper className={classes.paper}>
         <TextField
           fullWidth
           placeholder="Search…"
@@ -49,9 +69,7 @@ const Team = props => {
           }}
           onChange={event => setSearchText(event.target.value)}
         />
-      </Grid>
 
-      <Grid item xs={12}>
         <FormControlLabel
           control={
             <Checkbox
@@ -62,8 +80,6 @@ const Team = props => {
           }
           label="My teams"
         />
-      </Grid>
-      <Grid item xs={12}>
         {!loading && (
           <>
             {filteredTeams.length > 0 && (
@@ -76,9 +92,7 @@ const Team = props => {
             {!filteredTeams.length && (
               <Box textAlign="center" width={1}>
                 <EmptyFeedbackImage />
-                <Typography variant="subtitle1">
-                  No se encontraron equipos
-                </Typography>
+                <Typography variant="subtitle1">No teams found</Typography>
               </Box>
             )}
           </>
@@ -89,9 +103,14 @@ const Team = props => {
             <CircularProgress />
           </Box>
         )}
-      </Grid>
-    </Grid>
+      </Paper>
+      <Link to="/team/add">
+        <Fab color="primary" className={classes.fab}>
+          <AddIcon />
+        </Fab>
+      </Link>
+    </>
   );
 };
 
-export default Team;
+export default withStyles(styles)(Team);

@@ -9,7 +9,7 @@ const config = {
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_ID,
+  appId: process.env.REACT_APP_ID
 };
 
 const USER_COLLECTION = "user";
@@ -38,7 +38,7 @@ class Firebase {
       .set(
         {
           userId: user.uid,
-          displayName: user.displayName,
+          displayName: user.displayName
         },
         { merge: true }
       );
@@ -67,11 +67,22 @@ class Firebase {
   }
 
   async fetchTournamentById(idTournament) {
-    const result = await this.db.collection(TOURNAMENT_COLLECTION)
-    .where('id', '==', idTournament)
-    .get();
+    const result = await this.db
+      .collection(TOURNAMENT_COLLECTION)
+      .where("id", "==", idTournament)
+      .get();
 
-    return result.docs.map(doc => ({ ...doc.data(), id: doc.id }))[0];;
+    return result.docs.map(doc => ({ ...doc.data(), id: doc.id }))[0];
+  }
+
+  async addTeam(newTeam) {
+    const ref = await this.db.collection(TEAM_COLLECTION).add(newTeam);
+    return ref.id;
+  }
+
+  async fetchAllUsers() {
+    const snapshot = await this.db.collection(USER_COLLECTION).get();
+    return snapshot.docs.map(doc => doc.data());
   }
 }
 
