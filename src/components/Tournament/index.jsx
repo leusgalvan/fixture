@@ -68,7 +68,7 @@ const Tournament = () => {
       <Grid container justify="center">
         {loading ? (
           <Grid item className={classes.root}>
-            <CircularProgress className={classes.progress} />
+            <CircularProgress />
             <Typography variant="h6">Loading...</Typography>
           </Grid>
         ) : (
