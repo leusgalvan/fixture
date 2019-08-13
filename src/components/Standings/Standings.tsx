@@ -1,8 +1,13 @@
 import React, { useMemo } from "react";
 import mapTournamentToStandings from "./mapTournamentToStandings";
 import StandingsTable from "./StandingsTable";
+import { Tournament } from "../../types";
 
-const Standings = ({ tournament }) => {
+interface StandingsProps {
+  tournament: Tournament;
+}
+
+const Standings = ({ tournament }: StandingsProps) => {
   const standings = useMemo(() => mapTournamentToStandings(tournament), [
     tournament
   ]);

@@ -2,23 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
-import Firebase, { FirebaseContext } from "./components/Firebase";
-import { createMuiTheme } from "@material-ui/core/styles";
-import purple from "@material-ui/core/colors/purple";
-import pink from "@material-ui/core/colors/pink";
+import { firebase, FirebaseContext } from "./components/Firebase";
 import { ThemeProvider } from "@material-ui/styles";
+import theme from "./theme";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: purple,
-    secondary: pink
-  },
-  status: {
-    danger: "orange"
-  }
-});
 ReactDOM.render(
-  <FirebaseContext.Provider value={new Firebase()}>
+  <FirebaseContext.Provider value={firebase}>
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>

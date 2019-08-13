@@ -2,8 +2,13 @@ import React from "react";
 import Card from "@material-ui/core/Card";
 import { CardHeader, Typography, CardContent, Grid } from "@material-ui/core";
 import MatchView from "./MatchView";
+import { Tournament } from "../../types";
 
-const TournamentView = ({ schedule }) => {
+interface TournamentViewProps {
+  schedule: Tournament["schedule"];
+}
+
+const TournamentView = ({ schedule }: TournamentViewProps) => {
   return (
     <>
       {schedule.map(matchDay => (

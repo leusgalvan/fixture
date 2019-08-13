@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import SignIn from "../SignIn";
 import MainMenu from "../MainMenu";
-import { Typography } from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
+import { Redirect } from "react-router";
 
 const Home = () => {
   const firebase = useContext(FirebaseContext);
-  const [user, setUser] = useState(firebase.auth.currentUser);
+  const [user, setUser] = useState(firebase.getCurrentUser());
   const [error, setError] = useState("");
   return (
     <>
@@ -18,13 +19,9 @@ const Home = () => {
           {error}
         </Typography>
       )}
-      {user && <MainMenu onLogout={logout} />}
+      {user && <Redirect to="/mainMenu" />}
     </>
   );
-  async function logout() {
-    await firebase.logout();
-    setUser(null);
-  }
 };
 
 export default Home;

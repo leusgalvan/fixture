@@ -1,9 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
-import { LinearProgress, Container } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
 import Home from "../Home";
 import Tournament from "../Tournament";
-import Team from "../Team";
+import TeamView from "../Team";
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,6 +14,7 @@ import PrivateRoute from "../PrivateRoute";
 import StandingsContainer from "../Standings";
 import ResultsContainer from "../Results";
 import AddTeam from "../Team/AddTeam";
+import { Container, LinearProgress } from "@material-ui/core";
 
 const App = () => {
   const firebase = useContext(FirebaseContext);
@@ -27,7 +27,12 @@ const App = () => {
       <Router>
         <Switch>
           <Route exact path="/" component={Home} />
-          <PrivateRoute exact path="/mainMenu" component={MainMenu} />
+          <PrivateRoute
+            exact
+            path="/mainMenu"
+            component={MainMenu}
+            onLogout={() => {}}
+          />
           <PrivateRoute exact path="/tournament" component={Tournament} />
           <PrivateRoute
             exact
@@ -39,7 +44,7 @@ const App = () => {
             path="/results/:idTournament"
             component={ResultsContainer}
           />
-          <PrivateRoute exact path="/team" component={Team} />
+          <PrivateRoute exact path="/team" component={TeamView} />
           <PrivateRoute exact path="/team/add" component={AddTeam} />
           <Route component={() => <Redirect to="/" />} />
         </Switch>

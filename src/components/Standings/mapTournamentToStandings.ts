@@ -1,23 +1,19 @@
+import { Tournament, Match } from "../../types";
+import { Standing } from "./types";
+
 /**
  * Maps a tournament to an array representing the standings
- *
- *  * A song
- * @typedef {Object} Standing
- * @property {string} teamId - The team id
- * @property {string} teamName - The team name
- * @property {number} score - The team's score
- *
- * @param {tournament} The tournament
- * @returns {Standing[]}
  */
-export default function mapTournamentToStandings(tournament) {
+export default function mapTournamentToStandings(
+  tournament: Tournament
+): Standing[] {
   const matchesDays = tournament.schedule;
 
-  const matches = matchesDays.reduce((matchesSoFar, matchDay) => {
+  const matches = matchesDays.reduce<Match[]>((matchesSoFar, matchDay) => {
     return matchesSoFar.concat(matchDay.matches);
   }, []);
 
-  const standings = matches.reduce((standingsSoFar, match) => {
+  const standings = matches.reduce<Standing[]>((standingsSoFar, match) => {
     let newStandingsSoFar = standingsSoFar;
     const teams = match.teams;
 
@@ -44,7 +40,7 @@ export default function mapTournamentToStandings(tournament) {
     });
   }, []);
 
-  const sortedStandings = standings.sort((a, b) => a.score < b.score);
+  const sortedStandings = standings.sort((a, b) => b.score - a.score);
 
   return sortedStandings;
 }

@@ -8,18 +8,25 @@ import {
 } from "@material-ui/core";
 import EmptyFeedbackImage from "../Common/EmptyFeedbackImage";
 
+interface SelectableListProps {
+  items?: React.ReactNode[];
+  selectedIndexes?: number[];
+  onItemClicked?: (index: number) => void;
+}
+
 const SelectableList = ({
   items = [],
   selectedIndexes = [],
   onItemClicked = () => {}
-}) => {
-  const isSelected = i => selectedIndexes.includes(i);
+}: SelectableListProps) => {
+  const isSelected = (i: number) => selectedIndexes.includes(i);
+
   return items && items.length > 0 ? (
-    <List variant="div" disablePadding>
+    <List component="div" disablePadding>
       {items.map((item, i) => (
         <ListItem
           button
-          onClick={event => onItemClicked(i)}
+          onClick={() => onItemClicked(i)}
           key={i}
           selected={isSelected(i)}
         >

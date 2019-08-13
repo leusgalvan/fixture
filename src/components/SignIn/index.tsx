@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
+import { Theme } from "../../theme";
+import { User } from "firebase";
 
-const styles = theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     display: "flex",
     flexDirection: "column",
@@ -22,10 +24,16 @@ const styles = theme => ({
   button: {
     margin: theme.spacing(2)
   }
-});
+}));
 
-const SignIn = ({ classes, onLoginSuccess, onLoginError }) => {
+interface SignInProps {
+  onLoginSuccess: (user: User) => void;
+  onLoginError: (err: string) => void;
+}
+
+const SignIn = ({ onLoginSuccess, onLoginError }: SignInProps) => {
   const firebase = useContext(FirebaseContext);
+  const classes = useStyles();
 
   return (
     <Paper className={classes.paper}>
@@ -46,12 +54,16 @@ const SignIn = ({ classes, onLoginSuccess, onLoginError }) => {
 
   async function login() {
     const { error, user } = await firebase.login();
+
     if (error) {
       onLoginError(error);
+    }
+    if (!user) {
+      onLoginError("User is undefined");
     } else {
       onLoginSuccess(user);
     }
   }
 };
 
-export default withStyles(styles)(SignIn);
+export default SignIn;

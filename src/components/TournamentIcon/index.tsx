@@ -1,7 +1,8 @@
 import React from "react";
 import { SvgIcon } from "@material-ui/core";
+import { SvgIconProps } from "@material-ui/core/SvgIcon";
 
-const TournamentIcon = props => {
+const TournamentIcon = (props: SvgIconProps) => {
   return (
     <SvgIcon {...props} viewBox="0 0 512 512" height="24" width="24">
       <path d="M370.045,267c-5.519,0-9.998-4.477-9.998-10s4.47-10,9.989-10h0.01c5.52,0,9.993,4.477,9.993,10S375.564,267,370.045,267z" />

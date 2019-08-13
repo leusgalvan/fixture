@@ -8,9 +8,11 @@ import {
 } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
 import SelectableList from "../SelectableList";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import { RouteComponentProps } from "react-router";
+import { User, Team } from "../../types";
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     display: "flex",
     flexDirection: "column",
@@ -25,15 +27,17 @@ const styles = theme => ({
     marginRight: "auto",
     marginTop: theme.spacing(2)
   }
-});
+}));
 
-const AddTeam = ({ classes, history }) => {
+const AddTeam = ({ history }: RouteComponentProps) => {
+  const classes = useStyles();
+
   const firebase = useContext(FirebaseContext);
-  const [users, setUsers] = useState([]);
-  const [name, setName] = useState("");
-  const [selectedUserIndexes, setSelectedUserIndexes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const [name, setName] = useState<string>("");
+  const [selectedUserIndexes, setSelectedUserIndexes] = useState<number[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
     firebase.fetchAllUsers().then(allUsers => {
@@ -43,14 +47,15 @@ const AddTeam = ({ classes, history }) => {
   }, []);
 
   const userDisplayNames = users.map(user => user.displayName);
-  const onUserClicked = i => {
+  const onUserClicked = (i: number) => {
     const indexes = selectedUserIndexes.includes(i)
       ? selectedUserIndexes.filter(ix => ix !== i)
       : [...selectedUserIndexes, i];
     setSelectedUserIndexes(indexes);
   };
-  const onNameChange = event => setName(event.target.value);
-  const onSubmit = async event => {
+  const onNameChange: React.ChangeEventHandler<HTMLInputElement> = event =>
+    setName(event.target.value);
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitting(true);
     const newTeam = {
@@ -82,7 +87,6 @@ const AddTeam = ({ classes, history }) => {
           />
           {!loading ? (
             <SelectableList
-              id="membersList"
               items={userDisplayNames}
               selectedIndexes={selectedUserIndexes}
               onItemClicked={onUserClicked}
@@ -105,4 +109,4 @@ const AddTeam = ({ classes, history }) => {
   );
 };
 
-export default withStyles(styles)(AddTeam);
+export default AddTeam;
