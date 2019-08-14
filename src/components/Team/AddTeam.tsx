@@ -4,13 +4,13 @@ import {
   Button,
   TextField,
   CircularProgress,
-  Paper
+  Paper,
 } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
 import SelectableList from "../SelectableList";
 import { makeStyles } from "@material-ui/core/styles";
 import { RouteComponentProps } from "react-router";
-import { User, Team } from "../../types";
+import { User } from "../../types";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -18,15 +18,15 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     margin: "auto",
     width: "50%",
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
 
   save: {
     display: "flex",
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const AddTeam = ({ history }: RouteComponentProps) => {
@@ -44,6 +44,7 @@ const AddTeam = ({ history }: RouteComponentProps) => {
       setUsers(allUsers);
       setLoading(false);
     });
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const userDisplayNames = users.map(user => user.displayName);
@@ -60,7 +61,7 @@ const AddTeam = ({ history }: RouteComponentProps) => {
     setSubmitting(true);
     const newTeam = {
       name: name,
-      members: selectedUserIndexes.map(i => users[i])
+      members: selectedUserIndexes.map(i => users[i]),
     };
     console.log(newTeam);
     await firebase.addTeam(newTeam);

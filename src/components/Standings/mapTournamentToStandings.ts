@@ -1,5 +1,6 @@
 import { Tournament, Match } from "../../types";
 import { Standing } from "./types";
+import _ from "lodash";
 
 /**
  * Maps a tournament to an array representing the standings
@@ -24,19 +25,26 @@ export default function mapTournamentToStandings(
           {
             teamId: team.id,
             teamName: team.name,
-            score: 0
-          }
+            score: 0,
+            gamesPlayed: 0,
+          },
         ];
       }
     });
 
     const maybeWinnerTeamId = match.result;
-
     return newStandingsSoFar.map(standing => {
-      if (standing.teamId !== maybeWinnerTeamId) {
-        return standing;
-      }
-      return { ...standing, score: standing.score + 1 };
+      const deltaGamesPlayed =
+        match.teams.map(team => team.id).includes(standing.teamId) &&
+        maybeWinnerTeamId !== "not played"
+          ? 1
+          : 0;
+      const deltaScore = standing.teamId === maybeWinnerTeamId ? 1 : 0;
+      return {
+        ...standing,
+        score: standing.score + deltaScore,
+        gamesPlayed: standing.gamesPlayed + deltaGamesPlayed,
+      };
     });
   }, []);
 

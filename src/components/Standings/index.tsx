@@ -6,12 +6,13 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import { RouteComponentProps } from "react-router";
 import { Tournament } from "../../types";
+import TournamentView from "../Tournament/TournamentView";
 
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20
-  }
+    padding: 20,
+  },
 });
 
 interface StandingsContainerRouteParams {
@@ -19,7 +20,7 @@ interface StandingsContainerRouteParams {
 }
 
 const StandingsContainer = ({
-  match
+  match,
 }: RouteComponentProps<StandingsContainerRouteParams>) => {
   const [tournament, setTournament] = useState<Tournament | null>(null);
 
@@ -35,17 +36,29 @@ const StandingsContainer = ({
       setTournament(data);
     };
     fetchTournamentFromDb();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match.params.idTournament]);
 
   return (
     <Grid container justify={"center"}>
       {tournament ? (
         <>
-          <Grid item className={classes.root}>
+          <Grid item className={classes.root} xs={12}>
+            <Typography variant="h1" color="primary">
+              Tournament {tournament.name}
+            </Typography>
+          </Grid>
+          <Grid item className={classes.root} xs={12}>
             <Typography variant="h2" color="primary">
-              {tournament.name}
+              Standings
             </Typography>
             <Standings tournament={tournament} />
+          </Grid>
+          <Grid item className={classes.root} xs={12}>
+            <Typography variant="h2" color="primary">
+              Scores
+            </Typography>
+            <TournamentView schedule={tournament.schedule} />
           </Grid>
         </>
       ) : (

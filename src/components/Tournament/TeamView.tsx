@@ -2,7 +2,6 @@ import React from "react";
 import { Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "../../theme";
-import { Team } from "../../types";
 
 const useStyles = makeStyles<Theme, Pick<TeamViewProps, "winner">>(theme => {
   return {
@@ -11,8 +10,8 @@ const useStyles = makeStyles<Theme, Pick<TeamViewProps, "winner">>(theme => {
       textAlign: "center",
       backgroundColor: ({ winner }) =>
         winner ? "green" : theme.palette.secondary.dark,
-      color: "white"
-    }
+      color: "white",
+    },
   };
 });
 

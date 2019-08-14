@@ -10,12 +10,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Team, Tournament as TournamentType } from "../../types";
 import { ValueType } from "react-select/src/types";
+import { RouteComponentProps } from "react-router";
 
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20
-  }
+    padding: 20,
+  },
 });
 
 interface TeamOption extends Team {
@@ -23,7 +24,7 @@ interface TeamOption extends Team {
   label: string;
 }
 
-const Tournament = () => {
+const Tournament = ({ history }: RouteComponentProps) => {
   const [selectedTeams, setSelectedTeams] = useState<TeamOption[]>([]);
   const [tournament, setTournament] = useState<TournamentType | null>(null);
   const [availableTeams, setAvailableTeams] = useState<TeamOption[]>([]);
@@ -41,7 +42,7 @@ const Tournament = () => {
       const teamOptions = data.map(team => ({
         value: team.name,
         label: team.name,
-        ...team
+        ...team,
       }));
       setAvailableTeams(teamOptions);
       setLoading(false);
@@ -62,12 +63,12 @@ const Tournament = () => {
   const handleConfirmClick = () => {
     setLoading(true);
     tournament &&
-      firebase.saveTournament(tournament).then(() => {
+      firebase.saveTournament(tournament).then(tournament => {
         setTournament(null);
         setLoading(false);
         setTournamentName("");
         setSelectedTeams([]);
-        //TODO redirect user to tournament/tournamentID page to see scores
+        history.push(`/standings/${tournament.id}`);
       });
   };
 
