@@ -6,11 +6,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import TournamentIcon from "../TournamentIcon";
 import { Link } from "react-router-dom";
+import { Theme } from "../../theme";
 
-const styles = theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     display: "flex",
     flexDirection: "column",
@@ -18,9 +19,15 @@ const styles = theme => ({
     width: "50%",
     padding: theme.spacing(2)
   }
-});
+}));
 
-const MainMenu = ({ classes, onLogout }) => {
+interface MainMenuProps {
+  onLogout: () => void;
+}
+
+const MainMenu = ({ onLogout }: MainMenuProps) => {
+  const classes = useStyles();
+
   return (
     <Paper className={classes.paper}>
       <List component="nav">
@@ -51,4 +58,4 @@ const MainMenu = ({ classes, onLogout }) => {
   );
 };
 
-export default withStyles(styles)(MainMenu);
+export default MainMenu;

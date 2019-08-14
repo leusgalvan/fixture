@@ -7,8 +7,13 @@ import {
   TableCell,
   TableBody
 } from "@material-ui/core";
+import { Standing } from "./types";
 
-const StandingsTable = ({ standings }) => {
+interface StandingsTableProps {
+  standings: Standing[];
+}
+
+const StandingsTable = ({ standings }: StandingsTableProps) => {
   return (
     <Paper>
       <Table>

@@ -2,7 +2,10 @@ import React from "react";
 import emptyFeedbackSvg from "./empty_feedback.svg";
 import { styled } from "@material-ui/styles";
 
-const EmptyFeedbackImage = ({ alt, ...rest }) => (
+const EmptyFeedbackImage = ({
+  alt,
+  ...rest
+}: React.ImgHTMLAttributes<HTMLImageElement>) => (
   <Img src={emptyFeedbackSvg} alt={alt} {...rest} />
 );
 

@@ -1,7 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid, Paper, Typography } from "@material-ui/core";
-import TeamView from './TeamView';
+import TeamView from "./TeamView";
+import { RouteComponentProps } from "react-router";
+import { Match } from "../../types";
 
 const useStyles = makeStyles(theme => {
   return {
@@ -9,7 +11,12 @@ const useStyles = makeStyles(theme => {
     matchTitle: { textAlign: "center" }
   };
 });
-const MatchView = ({ match }) => {
+
+interface MatchViewProps {
+  match: Match;
+}
+
+const MatchView = ({ match }: MatchViewProps) => {
   const classes = useStyles();
 
   const [team1, team2] = match.teams;
@@ -22,13 +29,13 @@ const MatchView = ({ match }) => {
         </Paper>
       </Grid>
       <Grid item xs={5}>
-        <TeamView winner={team1.id === match.result} teamName={team1.label}/>
+        <TeamView winner={team1.id === match.result} teamName={team1.name} />
       </Grid>
       <Grid className={classes.matchTitle} item xs={2}>
         <Typography variant="h6">VS</Typography>
       </Grid>
       <Grid item xs={5}>
-        <TeamView winner={team2.id === match.result} teamName={team2.label}/>
+        <TeamView winner={team2.id === match.result} teamName={team2.name} />
       </Grid>
     </Grid>
   );

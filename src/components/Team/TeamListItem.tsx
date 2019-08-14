@@ -5,8 +5,13 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import { Team } from "../../types";
 
-const TeamListItem = ({ team }) => {
+export interface TeamListItemProps {
+  team: Team;
+}
+
+const TeamListItem = ({ team }: TeamListItemProps) => {
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {

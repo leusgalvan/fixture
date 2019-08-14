@@ -8,6 +8,8 @@ import { FirebaseContext } from "../Firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import { Team, Tournament as TournamentType } from "../../types";
+import { ValueType } from "react-select/src/types";
 
 const useStyles = makeStyles({
   root: {
@@ -16,10 +18,15 @@ const useStyles = makeStyles({
   }
 });
 
+interface TeamOption extends Team {
+  value: string;
+  label: string;
+}
+
 const Tournament = () => {
-  const [selectedTeams, setSelectedTeams] = useState([]);
-  const [tournament, setTournament] = useState({ schedule: [], name: "" });
-  const [availableTeams, setAvailableTeams] = useState([]);
+  const [selectedTeams, setSelectedTeams] = useState<TeamOption[]>([]);
+  const [tournament, setTournament] = useState<TournamentType | null>(null);
+  const [availableTeams, setAvailableTeams] = useState<TeamOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [tournamentName, setTournamentName] = useState("");
   const [error, setError] = useState(false);
@@ -31,10 +38,10 @@ const Tournament = () => {
   useEffect(() => {
     const fetchTeamsFromDB = async () => {
       const data = await firebase.fetchAllTeams();
-      const teamOptions = data.map(t => ({
-        value: t.name,
-        label: t.name,
-        ...t,
+      const teamOptions = data.map(team => ({
+        value: team.name,
+        label: team.name,
+        ...team
       }));
       setAvailableTeams(teamOptions);
       setLoading(false);
@@ -54,13 +61,14 @@ const Tournament = () => {
 
   const handleConfirmClick = () => {
     setLoading(true);
-    firebase.saveTournament(tournament).then(() => {
-      setTournament({ schedule: [], name: "" });
-      setLoading(false);
-      setTournamentName("");
-      setSelectedTeams([]);
-      //TODO redirect user to tournament/tournamentID page to see scores
-    });
+    tournament &&
+      firebase.saveTournament(tournament).then(() => {
+        setTournament(null);
+        setLoading(false);
+        setTournamentName("");
+        setSelectedTeams([]);
+        //TODO redirect user to tournament/tournamentID page to see scores
+      });
   };
 
   return (
@@ -76,9 +84,11 @@ const Tournament = () => {
             <Grid className={classes.root} item xs={12} sm={6}>
               <Select
                 isMulti
-                value={selectedTeams}
-                onChange={newTeams => setSelectedTeams(newTeams)}
                 options={availableTeams}
+                value={selectedTeams}
+                onChange={(teams: ValueType<TeamOption>) => {
+                  setSelectedTeams(teams as TeamOption[]);
+                }}
               />
             </Grid>
             <Grid className={classes.root} item xs={12}>
@@ -101,22 +111,21 @@ const Tournament = () => {
                 Generate league
               </Button>
             </Grid>
-
-            <Grid item xs={12}>
-              <TournamentView
-                schedule={tournament.schedule ? tournament.schedule : []}
-              />
-            </Grid>
-            {tournament.schedule.length > 0 && (
-              <Grid className={classes.root} item xs={12}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleConfirmClick}
-                >
-                  Save tournament
-                </Button>
-              </Grid>
+            {tournament && (
+              <>
+                <Grid item xs={12}>
+                  <TournamentView schedule={tournament.schedule} />
+                </Grid>
+                <Grid className={classes.root} item xs={12}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleConfirmClick}
+                  >
+                    Save tournament
+                  </Button>
+                </Grid>
+              </>
             )}
           </>
         )}

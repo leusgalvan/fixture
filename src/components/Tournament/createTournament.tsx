@@ -1,20 +1,22 @@
 import _ from "lodash";
+import { Team, MatchDay, Pair, Tournament } from "../../types";
 
-const createTournament = (selectedTeams, name) => {
-  if (!selectedTeams || selectedTeams.length < 2) return [];
+const createTournament = (
+  teams: Team[],
+  tournamentName: string
+): Tournament | null => {
+  if (!teams || teams.length < 2) return null;
   var shuffledTeams;
-  if (selectedTeams.length % 2 !== 0) {
+  if (teams.length % 2 !== 0) {
     shuffledTeams = _.shuffle(
-      selectedTeams.concat({
+      teams.concat({
         id: "LIBRE",
         members: [],
-        name: "LIBRE",
-        label: "LIBRE",
-        value: "LIBRE",
+        name: "LIBRE"
       })
     );
   } else {
-    shuffledTeams = _.shuffle(selectedTeams);
+    shuffledTeams = _.shuffle(teams);
   }
   const nrDates = shuffledTeams.length - 1;
 
@@ -22,20 +24,27 @@ const createTournament = (selectedTeams, name) => {
   const lower = shuffledTeams.slice(shuffledTeams.length / 2).reverse();
 
   const buildMatchDays = (
-    upper,
-    lower,
-    nrDates,
+    upper: Team[],
+    lower: Team[],
+    nrDates: number,
     currentDate = 1,
-    matchDays = []
-  ) => {
-    const buildDate = (number, upper, lower) => ({
-      matchDay: number,
-      matches: _.zip(upper, lower).map((teams, idx) => ({
-        matchNumber: idx + 1,
-        teams,
-        result: "not played",
-      })),
-    });
+    matchDays: MatchDay[] = []
+  ): MatchDay[] => {
+    const buildDate = (
+      number: number,
+      upper: Team[],
+      lower: Team[]
+    ): MatchDay => {
+      const zippedTeams = _.zip(upper, lower) as Pair<Team, Team>[];
+      return {
+        matchDay: number,
+        matches: zippedTeams.map((teams, idx) => ({
+          matchNumber: idx + 1,
+          teams,
+          result: "not played"
+        }))
+      };
+    };
     if (currentDate === 1) {
       const firstDate = buildDate(1, upper, lower);
       const newMatchDays = matchDays.concat(firstDate);
@@ -47,10 +56,11 @@ const createTournament = (selectedTeams, name) => {
         newMatchDays
       );
     } else if (currentDate <= nrDates) {
-      const newUpper = []
-        .concat(upper[0])
-        .concat(lower[0])
-        .concat(upper.slice(1, upper.length - 1));
+      const newUpper = [
+        upper[0],
+        lower[0],
+        ...upper.slice(1, upper.length - 1)
+      ];
       const newLower = lower.slice(1).concat(upper[upper.length - 1]);
       const newDate = buildDate(currentDate, upper, lower);
       const newDates = matchDays.concat(newDate);
@@ -75,8 +85,8 @@ const createTournament = (selectedTeams, name) => {
       Math.random()
         .toString(36)
         .substring(2, 15),
-    name,
-    schedule: matchDays,
+    name: tournamentName,
+    schedule: matchDays
   };
 };
 

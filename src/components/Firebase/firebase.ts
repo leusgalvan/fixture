@@ -1,6 +1,7 @@
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import { Tournament, Team, User } from "../../types";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -16,13 +17,16 @@ const USER_COLLECTION = "user";
 const TEAM_COLLECTION = "team";
 const TOURNAMENT_COLLECTION = "tournament";
 
-class Firebase {
+export class Firebase {
+  private readonly provider = new app.auth.GoogleAuthProvider();
+  private auth: app.auth.Auth;
+  private db: app.firestore.Firestore;
+
   constructor() {
     app.initializeApp(config);
 
     this.auth = app.auth();
     this.db = app.firestore();
-    this.provider = new app.auth.GoogleAuthProvider();
   }
 
   async login() {
@@ -46,7 +50,7 @@ class Firebase {
     return { user };
   }
 
-  onInitialize(callback) {
+  onInitialize(callback: () => void) {
     this.auth.onAuthStateChanged(callback);
   }
 
@@ -54,36 +58,44 @@ class Firebase {
     return this.auth.signOut();
   }
 
-  async fetchAllTeams() {
-    const snapshot = await this.db.collection(TEAM_COLLECTION).get();
-    return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+  getCurrentUser() {
+    return this.auth.currentUser;
   }
 
-  async saveTournament(tournament) {
+  async fetchAllTeams() {
+    const snapshot = await this.db.collection(TEAM_COLLECTION).get();
+    return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Team));
+  }
+
+  async saveTournament(tournament: Tournament) {
     const result = await this.db
       .collection(TOURNAMENT_COLLECTION)
       .add(tournament);
     return result;
   }
 
-  async fetchTournamentById(idTournament) {
+  async fetchTournamentById(
+    idTournament: string
+  ): Promise<Tournament & { id: string }> {
     const result = await this.db
       .collection(TOURNAMENT_COLLECTION)
-      .where("id", "==", idTournament)
+      .doc(idTournament)
       .get();
 
-    return result.docs.map(doc => ({ ...doc.data(), id: doc.id }))[0];
+    const tournament = result.data() as Tournament;
+
+    return { ...tournament, id: result.id };
   }
 
-  async addTeam(newTeam) {
+  async addTeam(newTeam: Omit<Team, "id">) {
     const ref = await this.db.collection(TEAM_COLLECTION).add(newTeam);
     return ref.id;
   }
 
   async fetchAllUsers() {
     const snapshot = await this.db.collection(USER_COLLECTION).get();
-    return snapshot.docs.map(doc => doc.data());
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as User[];
   }
 }
 
-export default Firebase;
+export default new Firebase();

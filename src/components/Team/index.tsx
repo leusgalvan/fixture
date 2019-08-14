@@ -13,9 +13,10 @@ import TeamListItem from "./TeamListItem";
 import { Link } from "react-router-dom";
 import EmptyFeedbackImage from "../Common/EmptyFeedbackImage";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import { Team } from "../../types";
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     display: "flex",
     flexDirection: "column",
@@ -29,27 +30,30 @@ const styles = theme => ({
     right: "20%",
     bottom: theme.spacing(2)
   }
-});
+}));
 
-const Team = ({ classes }) => {
+const TeamView = () => {
+  const classes = useStyles();
+
   const firebase = useContext(FirebaseContext);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [filterByLoggedUser, setFilterByLoggedUser] = useState(false);
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState<Team[]>([]);
   useEffect(() => {
     firebase.fetchAllTeams().then(allTeams => {
       setTeams(allTeams);
       setLoading(false);
     });
   }, [firebase]);
-  const filterteams = gs => {
-    const user = firebase.auth.currentUser;
+  const filterteams = (teams: Team[]) => {
+    const user = firebase.getCurrentUser();
+    const userId = user && user.uid;
     const filteredByUser = filterByLoggedUser
-      ? gs.filter(g => g.members.some(m => m.userId === user.uid))
-      : gs;
+      ? teams.filter(team => team.members.some(member => member.id === userId))
+      : teams;
     return searchText
-      ? filteredByUser.filter(g => g.name.includes(searchText))
+      ? filteredByUser.filter(team => team.name.includes(searchText))
       : filteredByUser;
   };
 
@@ -99,7 +103,7 @@ const Team = ({ classes }) => {
         )}
 
         {loading && (
-          <Box textAlign="center" w={1} mt="10vh">
+          <Box textAlign="center" width={1} mt="10vh">
             <CircularProgress />
           </Box>
         )}
@@ -113,4 +117,4 @@ const Team = ({ classes }) => {
   );
 };
 
-export default withStyles(styles)(Team);
+export default TeamView;

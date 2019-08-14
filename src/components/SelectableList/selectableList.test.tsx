@@ -31,19 +31,19 @@ describe("SelectableList", () => {
       selectableList
         .find(ListItemText)
         .at(0)
-        .props("selected")
+        .prop("selected")
     ).toBeFalsy;
     expect(
       selectableList
         .find(ListItemText)
         .at(1)
-        .props("selected")
+        .prop("selected")
     ).toBeFalsy;
     expect(
       selectableList
         .find(ListItemText)
         .at(2)
-        .props("selected")
+        .prop("selected")
     ).toBeFalsy;
   });
 
@@ -57,19 +57,19 @@ describe("SelectableList", () => {
       selectableList
         .find(ListItemText)
         .at(0)
-        .props("selected")
+        .prop("selected")
     ).toBeTruthy;
     expect(
       selectableList
         .find(ListItemText)
         .at(1)
-        .props("selected")
+        .prop("selected")
     ).toBeFalsy;
     expect(
       selectableList
         .find(ListItemText)
         .at(2)
-        .props("selected")
+        .prop("selected")
     ).toBeFalsy;
   });
 
@@ -83,19 +83,19 @@ describe("SelectableList", () => {
       selectableList
         .find(ListItemText)
         .at(0)
-        .props("selected")
+        .prop("selected")
     ).toBeFalsy;
     expect(
       selectableList
         .find(ListItemText)
         .at(1)
-        .props("selected")
+        .prop("selected")
     ).toBeTruthy;
     expect(
       selectableList
         .find(ListItemText)
         .at(2)
-        .props("selected")
+        .prop("selected")
     ).toBeFalsy;
   });
 
@@ -109,19 +109,19 @@ describe("SelectableList", () => {
       selectableList
         .find(ListItemText)
         .at(0)
-        .props("selected")
+        .prop("selected")
     ).toBeFalsy;
     expect(
       selectableList
         .find(ListItemText)
         .at(1)
-        .props("selected")
+        .prop("selected")
     ).toBeFalsy;
     expect(
       selectableList
         .find(ListItemText)
         .at(2)
-        .props("selected")
+        .prop("selected")
     ).toBeTruthy;
   });
 
@@ -135,19 +135,19 @@ describe("SelectableList", () => {
       selectableList
         .find(ListItemText)
         .at(0)
-        .props("selected")
+        .prop("selected")
     ).toBeTruthy;
     expect(
       selectableList
         .find(ListItemText)
         .at(1)
-        .props("selected")
+        .prop("selected")
     ).toBeTruthy;
     expect(
       selectableList
         .find(ListItemText)
         .at(2)
-        .props("selected")
+        .prop("selected")
     ).toBeTruthy;
   });
 

@@ -1,4 +1,5 @@
 import mapTournamentToStandings from "./mapTournamentToStandings";
+import { Tournament } from "../../types";
 
 describe("mapTournamentToStandings", () => {
   it("should return empty array when there are no matches", () => {
@@ -12,7 +13,7 @@ describe("mapTournamentToStandings", () => {
   });
 
   it("should show teams without score when no matches were played", () => {
-    const dummyTournament = {
+    const dummyTournament: Tournament = {
       id: "lskj2342",
       name: "Metegol",
       schedule: [
@@ -63,7 +64,7 @@ describe("mapTournamentToStandings", () => {
   });
 
   it("should position the teams correctly: 1st use case", () => {
-    const dummyTournament = {
+    const dummyTournament: Tournament = {
       id: "lskj2342",
       name: "Metegol",
       schedule: [
@@ -114,7 +115,7 @@ describe("mapTournamentToStandings", () => {
   });
 
   it("should position the teams correctly: 2nd use case", () => {
-    const dummyTournament = {
+    const dummyTournament: Tournament = {
       id: "lskj2342",
       name: "Metegol",
       schedule: [
