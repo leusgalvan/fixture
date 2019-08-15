@@ -10,7 +10,7 @@ import { FirebaseContext } from "../Firebase";
 import SelectableList from "../SelectableList";
 import { makeStyles } from "@material-ui/core/styles";
 import { RouteComponentProps } from "react-router";
-import { User, Team } from "../../types";
+import { User } from "../../types";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -44,7 +44,8 @@ const AddTeam = ({ history }: RouteComponentProps) => {
       setUsers(allUsers);
       setLoading(false);
     });
-  }, []);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [users]);
 
   const userDisplayNames = users.map(user => user.displayName);
   const onUserClicked = (i: number) => {

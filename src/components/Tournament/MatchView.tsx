@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid, Paper, Typography } from "@material-ui/core";
 import TeamView from "./TeamView";
-import { RouteComponentProps } from "react-router";
 import { Match } from "../../types";
 
 const useStyles = makeStyles(theme => {

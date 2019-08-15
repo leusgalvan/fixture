@@ -41,7 +41,6 @@ export class Firebase {
       .doc(user.uid)
       .set(
         {
-          userId: user.uid,
           displayName: user.displayName
         },
         { merge: true }
@@ -67,16 +66,14 @@ export class Firebase {
     return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Team));
   }
 
-  async saveTournament(tournament: Tournament) {
+  async saveTournament(tournament: Omit<Tournament, "id">) {
     const result = await this.db
       .collection(TOURNAMENT_COLLECTION)
       .add(tournament);
     return result;
   }
 
-  async fetchTournamentById(
-    idTournament: string
-  ): Promise<Tournament & { id: string }> {
+  async fetchTournamentById(idTournament: string): Promise<Tournament> {
     const result = await this.db
       .collection(TOURNAMENT_COLLECTION)
       .doc(idTournament)
