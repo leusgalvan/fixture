@@ -13,9 +13,11 @@ const useStyles = makeStyles(theme => {
 
 interface MatchViewProps {
   match: Match;
+  matchDay: number;
+  handleTeamSelected?: (teamId: string, matchDay: number) => void;
 }
 
-const MatchView = ({ match }: MatchViewProps) => {
+const MatchView = ({ match, matchDay, handleTeamSelected }: MatchViewProps) => {
   const classes = useStyles();
 
   const [team1, team2] = match.teams;
@@ -28,13 +30,25 @@ const MatchView = ({ match }: MatchViewProps) => {
         </Paper>
       </Grid>
       <Grid item xs={5}>
-        <TeamView winner={team1.id === match.result} teamName={team1.name} />
+        <TeamView
+          onTeamSelected={() =>
+            handleTeamSelected && handleTeamSelected(team1.id, matchDay)
+          }
+          winner={team1.id === match.result}
+          teamName={team1.name}
+        />
       </Grid>
       <Grid className={classes.matchTitle} item xs={2}>
         <Typography variant="h6">VS</Typography>
       </Grid>
       <Grid item xs={5}>
-        <TeamView winner={team2.id === match.result} teamName={team2.name} />
+        <TeamView
+          onTeamSelected={() =>
+            handleTeamSelected && handleTeamSelected(team2.id, matchDay)
+          }
+          winner={team2.id === match.result}
+          teamName={team2.name}
+        />
       </Grid>
     </Grid>
   );

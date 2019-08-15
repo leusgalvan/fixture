@@ -1,12 +1,13 @@
 import React, { useEffect, useContext, useState } from "react";
 import { FirebaseContext } from "../Firebase";
 import Standings from "./Standings";
-import { Typography, Grid } from "@material-ui/core";
+import { Typography, Grid, Button } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import { RouteComponentProps } from "react-router";
 import { Tournament } from "../../types";
 import TournamentView from "../Tournament/TournamentView";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -59,6 +60,13 @@ const StandingsContainer = ({
               Scores
             </Typography>
             <TournamentView schedule={tournament.schedule} />
+          </Grid>
+          <Grid item>
+            <Link to={`/results/${tournament.id}`}>
+              <Button component="a" color="primary" variant="contained">
+                Edit results
+              </Button>
+            </Link>
           </Grid>
         </>
       ) : (

@@ -10,7 +10,7 @@ const config = {
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_ID
+  appId: process.env.REACT_APP_ID,
 };
 
 const USER_COLLECTION = "user";
@@ -48,7 +48,7 @@ export class Firebase {
       .doc(user.uid)
       .set(
         {
-          displayName: user.displayName
+          displayName: user.displayName,
         },
         { merge: true }
       );
@@ -77,6 +77,14 @@ export class Firebase {
     const result = await this.db
       .collection(TOURNAMENT_COLLECTION)
       .add(tournament);
+    return result;
+  }
+
+  async updateTournament(tournament: Tournament) {
+    const result = await this.db
+      .collection(TOURNAMENT_COLLECTION)
+      .doc(tournament.id)
+      .set(tournament);
     return result;
   }
 
