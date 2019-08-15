@@ -31,7 +31,6 @@ const App = () => {
             exact
             path="/mainMenu"
             component={MainMenu}
-            onLogout={() => {}}
           />
           <PrivateRoute exact path="/tournament" component={Tournament} />
           <PrivateRoute

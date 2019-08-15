@@ -44,9 +44,14 @@ const StandingsContainer = ({
     <Grid container justify={"center"}>
       {tournament ? (
         <>
-          <Grid item className={classes.root}>
+          <Grid item className={classes.root} xs={12}>
+            <Typography variant="h1" color="primary">
+              Tournament {tournament.name}
+            </Typography>
+          </Grid>
+          <Grid item className={classes.root} xs={12}>
             <Typography variant="h2" color="primary">
-              {tournament.name}
+              Standings
             </Typography>
             <Standings tournament={tournament} />
           </Grid>

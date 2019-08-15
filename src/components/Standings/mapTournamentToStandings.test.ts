@@ -6,7 +6,7 @@ describe("mapTournamentToStandings", () => {
     const dummyTournament = {
       id: "lskj2342",
       name: "Metegol",
-      schedule: []
+      schedule: [],
     };
 
     expect(mapTournamentToStandings(dummyTournament)).toEqual([]);
@@ -28,23 +28,23 @@ describe("mapTournamentToStandings", () => {
                   name: "A",
                   members: [
                     { id: "gino", displayName: "Gino" },
-                    { id: "chino", displayName: "Chino" }
-                  ]
+                    { id: "chino", displayName: "Chino" },
+                  ],
                 },
                 {
                   id: "b",
                   name: "B",
                   members: [
                     { id: "leus", displayName: "Leus" },
-                    { id: "euge", displayName: "Euge" }
-                  ]
-                }
+                    { id: "euge", displayName: "Euge" },
+                  ],
+                },
               ],
-              result: "not played"
-            }
-          ]
-        }
-      ]
+              result: "not played",
+            },
+          ],
+        },
+      ],
     };
 
     const standings = mapTournamentToStandings(dummyTournament);
@@ -53,13 +53,15 @@ describe("mapTournamentToStandings", () => {
       {
         teamId: "a",
         teamName: "A",
-        score: 0
+        score: 0,
+        gamesPlayed: 0,
       },
       {
         teamId: "b",
         teamName: "B",
-        score: 0
-      }
+        score: 0,
+        gamesPlayed: 0,
+      },
     ]);
   });
 
@@ -79,23 +81,23 @@ describe("mapTournamentToStandings", () => {
                   name: "A",
                   members: [
                     { id: "gino", displayName: "Gino" },
-                    { id: "chino", displayName: "Chino" }
-                  ]
+                    { id: "chino", displayName: "Chino" },
+                  ],
                 },
                 {
                   id: "b",
                   name: "B",
                   members: [
                     { id: "leus", displayName: "Leus" },
-                    { id: "euge", displayName: "Euge" }
-                  ]
-                }
+                    { id: "euge", displayName: "Euge" },
+                  ],
+                },
               ],
-              result: "a"
-            }
-          ]
-        }
-      ]
+              result: "a",
+            },
+          ],
+        },
+      ],
     };
 
     const standings = mapTournamentToStandings(dummyTournament);
@@ -104,13 +106,15 @@ describe("mapTournamentToStandings", () => {
       {
         teamId: "a",
         teamName: "A",
-        score: 1
+        score: 1,
+        gamesPlayed: 1,
       },
       {
         teamId: "b",
         teamName: "B",
-        score: 0
-      }
+        score: 0,
+        gamesPlayed: 1,
+      },
     ]);
   });
 
@@ -130,45 +134,45 @@ describe("mapTournamentToStandings", () => {
                   name: "A",
                   members: [
                     { id: "gino", displayName: "Gino" },
-                    { id: "chino", displayName: "Chino" }
-                  ]
+                    { id: "chino", displayName: "Chino" },
+                  ],
                 },
                 {
                   id: "b",
                   name: "B",
                   members: [
                     { id: "leus", displayName: "Leus" },
-                    { id: "euge", displayName: "Euge" }
-                  ]
-                }
+                    { id: "euge", displayName: "Euge" },
+                  ],
+                },
               ],
-              result: "a"
+              result: "a",
             },
             {
-              matchNumber: 1,
+              matchNumber: 2,
               teams: [
                 {
                   id: "c",
                   name: "C",
                   members: [
                     { id: "gino", displayName: "Gino" },
-                    { id: "chino", displayName: "Chino" }
-                  ]
+                    { id: "chino", displayName: "Chino" },
+                  ],
                 },
                 {
                   id: "d",
                   name: "D",
                   members: [
                     { id: "leus", displayName: "Leus" },
-                    { id: "euge", displayName: "Euge" }
-                  ]
-                }
+                    { id: "euge", displayName: "Euge" },
+                  ],
+                },
               ],
-              result: "c"
-            }
-          ]
-        }
-      ]
+              result: "c",
+            },
+          ],
+        },
+      ],
     };
 
     const standings = mapTournamentToStandings(dummyTournament);
@@ -177,23 +181,27 @@ describe("mapTournamentToStandings", () => {
       {
         teamId: "a",
         teamName: "A",
-        score: 1
+        score: 1,
+        gamesPlayed: 1,
       },
       {
         teamId: "c",
         teamName: "C",
-        score: 1
+        score: 1,
+        gamesPlayed: 1,
       },
       {
         teamId: "b",
         teamName: "B",
-        score: 0
+        score: 0,
+        gamesPlayed: 1,
       },
       {
         teamId: "d",
         teamName: "D",
-        score: 0
-      }
+        score: 0,
+        gamesPlayed: 1,
+      },
     ]);
   });
 });

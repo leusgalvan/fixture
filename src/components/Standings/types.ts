@@ -11,4 +11,8 @@ export interface Standing {
    * The team score
    */
   score: number;
+  /**
+   * The team games
+   */
+  gamesPlayed: number;
 }
