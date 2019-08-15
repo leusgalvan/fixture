@@ -34,8 +34,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test --coverage",
     "eject": "react-scripts eject",
-    "acceptance-test-background": "./node_modules/.bin/cypress run",
-    "acceptance-test-inbrowser": "./node_modules/.bin/cypress open run"
+    "cy:run-background": "./node_modules/.bin/cypress run",
+    "cy:run-browser": "./node_modules/.bin/cypress open run",
+    "acceptance-test-background": "cross-env TEST_USER=no@borrar.com TEST_PASS=123QWEasd start-server-and-test start http://localhost:5000 cy:run-background",
+    "acceptance-test-inbrowser": "cross-env TEST_USER=no@borrar.com TEST_PASS=123QWEasd start-server-and-test start http://localhost:5000 cy:run-browser"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -55,6 +57,7 @@
   "devDependencies": {
     "cross-env": "^5.2.0",
     "cypress": "^3.4.1",
-    "prettier": "1.18.2"
+    "prettier": "1.18.2",
+    "start-server-and-test": "^1.10.0"
   }
 }
