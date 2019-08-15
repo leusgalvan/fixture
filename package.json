@@ -30,7 +30,7 @@
     "typescript": "^3.5.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env PORT=5000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage",
     "eject": "react-scripts eject",
@@ -53,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^5.2.0",
     "cypress": "^3.4.1",
     "prettier": "1.18.2"
   }
