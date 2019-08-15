@@ -10,8 +10,8 @@ const useStyles = makeStyles<Theme, Pick<TeamViewProps, "winner">>(theme => {
       textAlign: "center",
       backgroundColor: ({ winner }) =>
         winner ? "green" : theme.palette.secondary.dark,
-      color: "white"
-    }
+      color: "white",
+    },
   };
 });
 

@@ -7,7 +7,7 @@ import { Match } from "../../types";
 const useStyles = makeStyles(theme => {
   return {
     root: { padding: "5%" },
-    matchTitle: { textAlign: "center" }
+    matchTitle: { textAlign: "center" },
   };
 });
 
