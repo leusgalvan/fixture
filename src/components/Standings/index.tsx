@@ -35,6 +35,7 @@ const StandingsContainer = ({
       setTournament(data);
     };
     fetchTournamentFromDb();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match.params.idTournament]);
 
   return (

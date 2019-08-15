@@ -25,7 +25,10 @@ interface TeamOption extends Team {
 
 const Tournament = () => {
   const [selectedTeams, setSelectedTeams] = useState<TeamOption[]>([]);
-  const [tournament, setTournament] = useState<TournamentType | null>(null);
+  const [tournament, setTournament] = useState<Omit<
+    TournamentType,
+    "id"
+  > | null>(null);
   const [availableTeams, setAvailableTeams] = useState<TeamOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [tournamentName, setTournamentName] = useState("");

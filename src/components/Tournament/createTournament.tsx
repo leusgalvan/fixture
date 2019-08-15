@@ -4,7 +4,7 @@ import { Team, MatchDay, Pair, Tournament } from "../../types";
 const createTournament = (
   teams: Team[],
   tournamentName: string
-): Tournament | null => {
+): Omit<Tournament, "id"> | null => {
   if (!teams || teams.length < 2) return null;
   var shuffledTeams;
   if (teams.length % 2 !== 0) {
@@ -78,13 +78,6 @@ const createTournament = (
 
   const matchDays = buildMatchDays(upper, lower, nrDates);
   return {
-    id:
-      Math.random()
-        .toString(36)
-        .substring(2, 15) +
-      Math.random()
-        .toString(36)
-        .substring(2, 15),
     name: tournamentName,
     schedule: matchDays
   };
