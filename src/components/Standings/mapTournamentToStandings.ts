@@ -15,22 +15,21 @@ export default function mapTournamentToStandings(
   }, []);
 
   const standings = matches.reduce<Standing[]>((standingsSoFar, match) => {
-    let newStandingsSoFar = standingsSoFar;
-    const teams = match.teams;
+    const standingsWithNoGames: Standing[] = match.teams
+      .filter(
+        team => !standingsSoFar.some(standing => standing.teamId === team.id)
+      )
+      .map(team => ({
+        teamId: team.id,
+        teamName: team.name,
+        score: 0,
+        gamesPlayed: 0,
+      }));
 
-    teams.forEach(team => {
-      if (!newStandingsSoFar.some(standing => standing.teamId === team.id)) {
-        newStandingsSoFar = [
-          ...newStandingsSoFar,
-          {
-            teamId: team.id,
-            teamName: team.name,
-            score: 0,
-            gamesPlayed: 0,
-          },
-        ];
-      }
-    });
+    const newStandingsSoFar: Standing[] = [
+      ...standingsSoFar,
+      ...standingsWithNoGames,
+    ];
 
     const maybeWinnerTeamId = match.result;
     return newStandingsSoFar.map(standing => {

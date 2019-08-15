@@ -73,65 +73,63 @@ const Tournament = ({ history }: RouteComponentProps) => {
   };
 
   return (
-    <>
-      <Grid container justify="center">
-        {loading ? (
-          <Grid item className={classes.root}>
-            <CircularProgress />
-            <Typography variant="h6">Loading...</Typography>
+    <Grid container justify="center">
+      {loading ? (
+        <Grid item className={classes.root}>
+          <CircularProgress />
+          <Typography variant="h6">Loading...</Typography>
+        </Grid>
+      ) : (
+        <>
+          <Grid className={classes.root} item xs={12} sm={6}>
+            <Select
+              isMulti
+              options={availableTeams}
+              value={selectedTeams}
+              onChange={(teams: ValueType<TeamOption>) => {
+                setSelectedTeams(teams as TeamOption[]);
+              }}
+            />
           </Grid>
-        ) : (
-          <>
-            <Grid className={classes.root} item xs={12} sm={6}>
-              <Select
-                isMulti
-                options={availableTeams}
-                value={selectedTeams}
-                onChange={(teams: ValueType<TeamOption>) => {
-                  setSelectedTeams(teams as TeamOption[]);
-                }}
-              />
-            </Grid>
-            <Grid className={classes.root} item xs={12}>
-              <TextField
-                label="Tournament name"
-                value={tournamentName}
-                onFocus={() => setError(false)}
-                onChange={e => setTournamentName(e.target.value)}
-                margin="normal"
-                error={error}
-                helperText={error ? "Please enter a tournament name" : ""}
-              />
-            </Grid>
-            <Grid className={classes.root} item xs={12}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleGenerateClick}
-              >
-                Generate league
-              </Button>
-            </Grid>
-            {tournament && (
-              <>
-                <Grid item xs={12}>
-                  <TournamentView schedule={tournament.schedule} />
-                </Grid>
-                <Grid className={classes.root} item xs={12}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleConfirmClick}
-                  >
-                    Save tournament
-                  </Button>
-                </Grid>
-              </>
-            )}
-          </>
-        )}
-      </Grid>
-    </>
+          <Grid className={classes.root} item xs={12}>
+            <TextField
+              label="Tournament name"
+              value={tournamentName}
+              onFocus={() => setError(false)}
+              onChange={e => setTournamentName(e.target.value)}
+              margin="normal"
+              error={error}
+              helperText={error ? "Please enter a tournament name" : ""}
+            />
+          </Grid>
+          <Grid className={classes.root} item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleGenerateClick}
+            >
+              Generate league
+            </Button>
+          </Grid>
+          {tournament && (
+            <>
+              <Grid item xs={12}>
+                <TournamentView schedule={tournament.schedule} />
+              </Grid>
+              <Grid className={classes.root} item xs={12}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleConfirmClick}
+                >
+                  Save tournament
+                </Button>
+              </Grid>
+            </>
+          )}
+        </>
+      )}
+    </Grid>
   );
 };
 
