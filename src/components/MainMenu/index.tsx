@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Paper from "@material-ui/core/Paper";
 import GroupIcon from "@material-ui/icons/Group";
 import List from "@material-ui/core/List";
@@ -10,6 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import TournamentIcon from "../TournamentIcon";
 import { Link } from "react-router-dom";
 import { Theme } from "../../theme";
+import { FirebaseContext } from "../Firebase";
+import { RouteComponentProps } from "react-router";
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -21,13 +23,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-interface MainMenuProps {
-  onLogout: () => void;
-}
-
-const MainMenu = ({ onLogout }: MainMenuProps) => {
+const MainMenu = ({ history }: RouteComponentProps) => {
+  const firebase = useContext(FirebaseContext);
   const classes = useStyles();
-
+  const logout = async () => {
+    await firebase.logout();
+    history.push("/");
+  }
   return (
     <Paper className={classes.paper}>
       <List component="nav">
@@ -47,7 +49,7 @@ const MainMenu = ({ onLogout }: MainMenuProps) => {
             <ListItemText primary="Tournaments" />
           </ListItem>
         </Link>
-        <ListItem button onClick={onLogout}>
+        <ListItem button onClick={logout}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>
