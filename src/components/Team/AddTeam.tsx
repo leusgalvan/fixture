@@ -45,7 +45,7 @@ const AddTeam = ({ history }: RouteComponentProps) => {
       setLoading(false);
     });
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [users]);
 
   const userDisplayNames = users.map(user => user.displayName);
   const onUserClicked = (i: number) => {

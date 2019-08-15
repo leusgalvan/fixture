@@ -30,7 +30,14 @@ export class Firebase {
   }
 
   async login() {
-    const { user } = await this.auth.signInWithPopup(this.provider);
+    const { user } = await (process.env.NODE_ENV !== "production" &&
+    process.env.TEST_USER &&
+    process.env.TEST_PASS
+      ? this.auth.signInWithEmailAndPassword(
+          process.env.TEST_USER,
+          process.env.TEST_PASS
+        )
+      : this.auth.signInWithPopup(this.provider));
 
     if (!user) {
       return { error: "There was an error in the login proccess." };
@@ -41,7 +48,6 @@ export class Firebase {
       .doc(user.uid)
       .set(
         {
-          userId: user.uid,
           displayName: user.displayName
         },
         { merge: true }
@@ -67,16 +73,14 @@ export class Firebase {
     return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Team));
   }
 
-  async saveTournament(tournament: Tournament) {
+  async saveTournament(tournament: Omit<Tournament, "id">) {
     const result = await this.db
       .collection(TOURNAMENT_COLLECTION)
       .add(tournament);
     return result;
   }
 
-  async fetchTournamentById(
-    idTournament: string
-  ): Promise<Tournament & { id: string }> {
+  async fetchTournamentById(idTournament: string): Promise<Tournament> {
     const result = await this.db
       .collection(TOURNAMENT_COLLECTION)
       .doc(idTournament)
