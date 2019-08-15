@@ -30,7 +30,14 @@ export class Firebase {
   }
 
   async login() {
-    const { user } = await this.auth.signInWithPopup(this.provider);
+    const { user } = await (process.env.NODE_ENV !== "production" &&
+    process.env.TEST_USER &&
+    process.env.TEST_PASS
+      ? this.auth.signInWithEmailAndPassword(
+          process.env.TEST_USER,
+          process.env.TEST_PASS
+        )
+      : this.auth.signInWithPopup(this.provider));
 
     if (!user) {
       return { error: "There was an error in the login proccess." };
