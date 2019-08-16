@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import { Typography, CircularProgress } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
 import { Theme } from "../../theme";
 import { User } from "firebase";
@@ -34,25 +34,34 @@ interface SignInProps {
 const SignIn = ({ onLoginSuccess, onLoginError }: SignInProps) => {
   const firebase = useContext(FirebaseContext);
   const classes = useStyles();
+  const [loading, setLoading] = useState(false);
 
   return (
     <Paper className={classes.paper}>
       <Typography className={classes.title} variant="h5" color="textPrimary">
         Welcome
       </Typography>
-      <Button
-        className={classes.button}
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={login}
-      >
-        Sign in
-      </Button>
+      {loading ? (
+        <>
+          <CircularProgress />
+          <Typography variant="h6">Signing in...</Typography>
+        </>
+      ) : (
+        <Button
+          className={classes.button}
+          fullWidth
+          variant="contained"
+          color="primary"
+          onClick={login}
+        >
+          Sign in
+        </Button>
+      )}
     </Paper>
   );
 
   async function login() {
+    setLoading(true);
     const { error, user } = await firebase.login();
 
     if (error) {
