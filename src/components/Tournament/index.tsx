@@ -15,8 +15,8 @@ import { RouteComponentProps } from "react-router";
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20,
-  },
+    padding: 20
+  }
 });
 
 interface TeamOption extends Team {
@@ -24,7 +24,7 @@ interface TeamOption extends Team {
   label: string;
 }
 
-const Tournament = ({ history }: RouteComponentProps) => {
+const AddTournament = ({ history }: RouteComponentProps) => {
   const [selectedTeams, setSelectedTeams] = useState<TeamOption[]>([]);
   const [tournament, setTournament] = useState<Omit<
     TournamentType,
@@ -45,7 +45,7 @@ const Tournament = ({ history }: RouteComponentProps) => {
       const teamOptions = data.map(team => ({
         value: team.name,
         label: team.name,
-        ...team,
+        ...team
       }));
       setAvailableTeams(teamOptions);
       setLoading(false);
@@ -136,4 +136,4 @@ const Tournament = ({ history }: RouteComponentProps) => {
   );
 };
 
-export default Tournament;
+export default AddTournament;
