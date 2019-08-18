@@ -7,7 +7,7 @@ interface TeamMemberListItemProps {
 }
 const TeamMemberListItem = ({ member }: TeamMemberListItemProps) => {
   return (
-    <ListItem button key={`team_member_list_item_inner_${member.id}`}>
+    <ListItem button>
       <ListItemText primary={member.displayName} />
     </ListItem>
   );
