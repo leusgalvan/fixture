@@ -15,8 +15,8 @@ import { RouteComponentProps } from "react-router";
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20,
-  },
+    padding: 20
+  }
 });
 
 interface TeamOption extends Team {
@@ -45,7 +45,7 @@ const Tournament = ({ history }: RouteComponentProps) => {
       const teamOptions = data.map(team => ({
         value: team.name,
         label: team.name,
-        ...team,
+        ...team
       }));
       setAvailableTeams(teamOptions);
       setLoading(false);

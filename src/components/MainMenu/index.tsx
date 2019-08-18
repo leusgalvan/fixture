@@ -29,7 +29,7 @@ const MainMenu = ({ history }: RouteComponentProps) => {
   const logout = async () => {
     await firebase.logout();
     history.push("/");
-  }
+  };
   return (
     <Paper className={classes.paper}>
       <List component="nav">
