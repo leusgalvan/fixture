@@ -6,6 +6,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import { Team } from "../../types";
+import TeamMemberListItem from "./TeamMemberListItem";
 
 export interface TeamListItemProps {
   team: Team;
@@ -27,10 +28,8 @@ const TeamListItem = ({ team }: TeamListItemProps) => {
 
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div">
-          {team.members.map((member, i) => (
-            <ListItem button key={i}>
-              <ListItemText primary={member.displayName} />
-            </ListItem>
+          {team.members.map(member => (
+            <TeamMemberListItem member={member} />
           ))}
         </List>
       </Collapse>
