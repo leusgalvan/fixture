@@ -56,31 +56,33 @@ export class Firebase {
     return { user };
   }
 
-  onInitialize(callback: () => void) {
+  onInitialize(callback: () => void): void {
     this.auth.onAuthStateChanged(callback);
   }
 
-  logout() {
+  logout(): Promise<void> {
     return this.auth.signOut();
   }
 
-  getCurrentUser() {
+  getCurrentUser(): firebase.User | null {
     return this.auth.currentUser;
   }
 
-  async fetchAllTeams() {
+  async fetchAllTeams(): Promise<Team[]> {
     const snapshot = await this.db.collection(TEAM_COLLECTION).get();
     return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Team));
   }
 
-  async saveTournament(tournament: Omit<Tournament, "id">) {
+  async saveTournament(
+    tournament: Omit<Tournament, "id">
+  ): Promise<app.firestore.DocumentReference> {
     const result = await this.db
       .collection(TOURNAMENT_COLLECTION)
       .add(tournament);
     return result;
   }
 
-  async updateTournament(tournament: Tournament) {
+  async updateTournament(tournament: Tournament): Promise<void> {
     const result = await this.db
       .collection(TOURNAMENT_COLLECTION)
       .doc(tournament.id)
@@ -111,9 +113,24 @@ export class Firebase {
       .delete();
   }
 
-  async fetchAllUsers() {
+  async fetchAllUsers(): Promise<User[]> {
     const snapshot = await this.db.collection(USER_COLLECTION).get();
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as User[];
+  }
+
+  async fetchAllTournaments(): Promise<Tournament[]> {
+    const snapshot = await this.db.collection(TOURNAMENT_COLLECTION).get();
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    })) as Tournament[];
+  }
+
+  async deleteTournament(tournamentId: string): Promise<void> {
+    return this.db
+      .collection(TOURNAMENT_COLLECTION)
+      .doc(tournamentId)
+      .delete();
   }
 }
 

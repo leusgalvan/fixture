@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { FirebaseContext } from "../Firebase";
 import Home from "../Home";
-import AddTournament from "../Tournament";
+import AddTournament from "../Tournament/AddTournament";
+import Tournament from "../Tournament";
 import TeamView from "../Team";
 import {
   BrowserRouter as Router,
@@ -28,6 +29,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={Home} />
           <PrivateRoute exact path="/mainMenu" component={MainMenu} />
+          <PrivateRoute exact path="/tournament" component={Tournament} />
           <PrivateRoute
             exact
             path="/tournament/add"
