@@ -58,6 +58,12 @@ const TeamView = () => {
   };
 
   const filteredTeams = filterteams(teams);
+
+  const handleDelete = async (team: Team) => {
+    await firebase.deleteTeam(team.id);
+    const teamsAfterDelete = teams.filter(t => t.id !== team.id);
+    setTeams(teamsAfterDelete);
+  };
   return (
     <>
       <Paper className={classes.paper}>
@@ -88,8 +94,12 @@ const TeamView = () => {
           <>
             {filteredTeams.length > 0 && (
               <List component="div">
-                {filteredTeams.map((team, i) => (
-                  <TeamListItem team={team} key={i} />
+                {filteredTeams.map(team => (
+                  <TeamListItem
+                    team={team}
+                    key={`team_list_item_${team.id}`}
+                    onDelete={handleDelete}
+                  />
                 ))}
               </List>
             )}
