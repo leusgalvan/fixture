@@ -22,6 +22,7 @@ const TournamentListItem = ({
       <ListItemText primary={tournament.name} />
       <Tooltip title="Standings">
         <IconButton
+          className="btn-standings"
           edge="end"
           component={Link}
           to={`/standings/${tournament.id}`}
@@ -30,7 +31,11 @@ const TournamentListItem = ({
         </IconButton>
       </Tooltip>
       <Tooltip title="Delete">
-        <IconButton edge="end" onClick={_ => onDelete(tournament)}>
+        <IconButton
+          edge="end"
+          onClick={_ => onDelete(tournament)}
+          className="btn-delete"
+        >
           <Delete />
         </IconButton>
       </Tooltip>
