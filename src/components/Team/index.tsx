@@ -40,12 +40,15 @@ const TeamView = () => {
   const [searchText, setSearchText] = useState("");
   const [filterByLoggedUser, setFilterByLoggedUser] = useState(false);
   const [teams, setTeams] = useState<Team[]>([]);
+  const [refetch, setRefetch] = useState<Boolean>(false);
+
   useEffect(() => {
     firebase.fetchAllTeams().then(allTeams => {
       setTeams(allTeams);
       setLoading(false);
     });
-  }, [firebase]);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refetch]);
   const filterteams = (teams: Team[]) => {
     const user = firebase.getCurrentUser();
     const userId = user && user.uid;
@@ -58,6 +61,12 @@ const TeamView = () => {
   };
 
   const filteredTeams = filterteams(teams);
+
+  const handleDelete = async (team: Team) => {
+    setLoading(true);
+    await firebase.deleteTeam(team.id);
+    setRefetch(!refetch);
+  };
   return (
     <>
       <Paper className={classes.paper}>
@@ -88,8 +97,12 @@ const TeamView = () => {
           <>
             {filteredTeams.length > 0 && (
               <List component="div">
-                {filteredTeams.map((team, i) => (
-                  <TeamListItem team={team} key={i} />
+                {filteredTeams.map(team => (
+                  <TeamListItem
+                    team={team}
+                    key={`team_list_item_${team.id}`}
+                    onDelete={handleDelete}
+                  />
                 ))}
               </List>
             )}

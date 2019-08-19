@@ -2,6 +2,7 @@ import React from "react";
 import { shallow, mount, ShallowWrapper } from "enzyme";
 import { ListItem, ListItemText, Collapse } from "@material-ui/core";
 import TeamListItem from "./TeamListItem";
+import TeamMemberListItem from "./TeamMemberListItem";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import { Team } from "../../types";
@@ -17,12 +18,9 @@ describe("TeamListItem", () => {
     expect(
       teamListItem.find(ListItemText).find({ primary: "Bonzzu" })
     ).toHaveLength(1);
-    expect(
-      teamListItem
-        .find(Collapse)
-        .find(ListItemText)
-        .find({ primary: "Leus" })
-    ).toHaveLength(1);
+    expect(teamListItem.find(Collapse).find(TeamMemberListItem)).toHaveLength(
+      1
+    );
   });
 
   it("should display one outer list item and one inner list item per member - two members", () => {
@@ -38,18 +36,9 @@ describe("TeamListItem", () => {
     expect(
       teamListItem.find(ListItemText).find({ primary: "Bonzzu" })
     ).toHaveLength(1);
-    expect(
-      teamListItem
-        .find(Collapse)
-        .find(ListItemText)
-        .find({ primary: "Leus" })
-    ).toHaveLength(1);
-    expect(
-      teamListItem
-        .find(Collapse)
-        .find(ListItemText)
-        .find({ primary: "Gino" })
-    ).toHaveLength(1);
+    expect(teamListItem.find(Collapse).find(TeamMemberListItem)).toHaveLength(
+      2
+    );
   });
 
   it("should be initially collapsed", () => {

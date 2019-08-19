@@ -10,12 +10,12 @@ import { Tournament, MatchDay } from "../../types";
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20,
-  },
+    padding: 20
+  }
 });
 
 const ResultsContainer = ({
-  match,
+  match
 }: RouteComponentProps<{ idTournament: string }>) => {
   const [tournament, setTournament] = useState<Tournament | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -44,7 +44,7 @@ const ResultsContainer = ({
           if (m.teams.some(t => t.id === teamId)) {
             return {
               ...m,
-              result: teamId,
+              result: teamId
             };
           } else {
             return m;
