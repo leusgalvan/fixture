@@ -10,13 +10,12 @@ const Home = () => {
   const [error, setError] = useState("");
   return (
     <>
-      {!user && !error && (
-        <SignIn onLoginError={setError} onLoginSuccess={setUser} />
-      )}
-      {error && (
-        <Typography variant="body1" color="textPrimary">
-          {error}
-        </Typography>
+      {!user && (
+        <SignIn
+          onLoginError={setError}
+          onLoginSuccess={setUser}
+          error={error}
+        />
       )}
       {user && <Redirect to="/mainMenu" />}
     </>
