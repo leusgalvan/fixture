@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import SignIn from "../SignIn";
-import { Typography } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
 import { Redirect } from "react-router";
 

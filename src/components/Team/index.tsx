@@ -6,8 +6,6 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { FirebaseContext } from "../Firebase";
 import List from "@material-ui/core/List";
 import Checkbox from "@material-ui/core/Checkbox";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TeamListItem from "./TeamListItem";
 import { Link } from "react-router-dom";
@@ -15,6 +13,7 @@ import EmptyFeedbackImage from "../Common/EmptyFeedbackImage";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Team } from "../../types";
+import AddButton from "../AddButton";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -25,10 +24,15 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2)
   },
 
-  fab: {
-    position: "fixed",
-    right: "20%",
-    bottom: theme.spacing(2)
+  link: {
+    textDecoration: "none"
+  },
+
+  add: {
+    display: "flex",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -121,10 +125,8 @@ const TeamView = () => {
           </Box>
         )}
       </Paper>
-      <Link to="/team/add">
-        <Fab color="primary" className={classes.fab}>
-          <AddIcon />
-        </Fab>
+      <Link to="/team/add" className={classes.link} >
+        <AddButton className={classes.add} />
       </Link>
     </>
   );
