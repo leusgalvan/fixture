@@ -14,24 +14,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: "auto",
     padding: theme.spacing(2),
     width: "50%",
-    alignItems: "center"
+    alignItems: "center",
   },
 
   title: {
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
   },
 
   button: {
-    margin: theme.spacing(2)
-  }
+    margin: theme.spacing(2),
+  },
 }));
 
 interface SignInProps {
   onLoginSuccess: (user: User) => void;
   onLoginError: (err: string) => void;
+  error?: string;
 }
 
-const SignIn = ({ onLoginSuccess, onLoginError }: SignInProps) => {
+const SignIn = ({ onLoginSuccess, onLoginError, error }: SignInProps) => {
   const firebase = useContext(FirebaseContext);
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
@@ -47,23 +48,31 @@ const SignIn = ({ onLoginSuccess, onLoginError }: SignInProps) => {
           <Typography variant="h6">Signing in...</Typography>
         </>
       ) : (
-        <Button
-          className={classes.button}
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={login}
-        >
-          Sign in
-        </Button>
+        <>
+          <Button
+            className={classes.button}
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={login}
+          >
+            Sign in
+          </Button>
+          {error && (
+            <Typography variant="h6" color="error">
+              {error}
+            </Typography>
+          )}
+        </>
       )}
     </Paper>
   );
 
   async function login() {
     setLoading(true);
-    const { error, user } = await firebase.login();
+    const { user, error } = await firebase.login();
 
+    setLoading(false);
     if (error) {
       onLoginError(error);
     }
