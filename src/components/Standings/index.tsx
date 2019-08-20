@@ -62,11 +62,9 @@ const StandingsContainer = ({
             <TournamentView schedule={tournament.schedule} />
           </Grid>
           <Grid item>
-            <Link to={`/results/${tournament.id}`}>
-              <Button component="a" color="primary" variant="contained">
+              <Button component={Link} to={`/results/${tournament.id}`} color="primary" variant="contained">
                 Edit results
               </Button>
-            </Link>
           </Grid>
         </>
       ) : (
