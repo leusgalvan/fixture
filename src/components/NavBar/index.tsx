@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     linkButtons: {
-      textDecoration: "none",
       color: "white",
     },
   })
@@ -35,15 +34,23 @@ const NavBar = () => {
           <Typography variant="h6" className={classes.title}>
             Olympic Bonzzu
           </Typography>
-          <Link to="/mainMenu">
-            <Button className={classes.linkButtons}>Home</Button>
-          </Link>
-          <Link to="/tournament">
-            <Button className={classes.linkButtons}>Tournaments</Button>
-          </Link>
-          <Link to="/team">
-            <Button className={classes.linkButtons}>Teams</Button>
-          </Link>
+          <Button
+            component={Link}
+            to="/mainMenu"
+            className={classes.linkButtons}
+          >
+            Home
+          </Button>
+          <Button
+            component={Link}
+            to="/tournament"
+            className={classes.linkButtons}
+          >
+            Tournaments
+          </Button>
+          <Button component={Link} to="/team" className={classes.linkButtons}>
+            Teams
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, CircularProgress } from "@material-ui/core";
+import { Typography, CircularProgress, Card } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
 import { Theme } from "../../theme";
 import { User } from "firebase";
@@ -26,8 +26,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(2),
   },
   media: {
+    // height: 0,
     width: "89%",
-    paddingTop: "60.25%",
+    paddingTop: "60.25%", // 16:9
+    backgroundSize: "contain",
   },
 }));
 
@@ -43,7 +45,7 @@ const SignIn = ({ onLoginSuccess, onLoginError, error }: SignInProps) => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <Paper className={classes.paper}>
+    <Card className={classes.paper}>
       <CardMedia
         className={classes.media}
         image={require("../Common/logo.png")}
@@ -75,7 +77,7 @@ const SignIn = ({ onLoginSuccess, onLoginError, error }: SignInProps) => {
           )}
         </>
       )}
-    </Paper>
+    </Card>
   );
 
   async function login() {
