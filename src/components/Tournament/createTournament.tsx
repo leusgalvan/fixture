@@ -12,7 +12,7 @@ const createTournament = (
       teams.concat({
         id: "LIBRE",
         members: [],
-        name: "LIBRE"
+        name: "LIBRE",
       })
     );
   } else {
@@ -41,8 +41,8 @@ const createTournament = (
         matches: zippedTeams.map((teams, idx) => ({
           matchNumber: idx + 1,
           teams,
-          result: "not played"
-        }))
+          result: "not played",
+        })),
       };
     };
     if (currentDate === 1) {
@@ -59,10 +59,10 @@ const createTournament = (
       const newUpper = [
         upper[0],
         lower[0],
-        ...upper.slice(1, upper.length - 1)
+        ...upper.slice(1, upper.length - 1),
       ];
       const newLower = lower.slice(1).concat(upper[upper.length - 1]);
-      const newDate = buildDate(currentDate, upper, lower);
+      const newDate = buildDate(currentDate, newUpper, newLower);
       const newDates = matchDays.concat(newDate);
       return buildMatchDays(
         newUpper,
@@ -79,7 +79,7 @@ const createTournament = (
   const matchDays = buildMatchDays(upper, lower, nrDates);
   return {
     name: tournamentName,
-    schedule: matchDays
+    schedule: matchDays,
   };
 };
 

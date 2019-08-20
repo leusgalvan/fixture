@@ -37,9 +37,7 @@ const TournamentView = ({
         <Card key={matchDay.matchDay}>
           <CardHeader
             title={
-              <Typography variant="h4">
-                Match day {matchDay.matchDay}
-              </Typography>
+              <Typography variant="h4">Matchday {matchDay.matchDay}</Typography>
             }
           />
           <CardContent>
