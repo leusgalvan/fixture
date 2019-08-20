@@ -54,12 +54,12 @@ export class Firebase {
             },
             { merge: true }
           );
-        return { user, error: undefined };
+        return { user };
       }
     } catch (error) {
-      return { user: undefined, error: "Couldn't log in, sorry." };
+      return { error: error.toString() };
     }
-    return { error: undefined, user: undefined };
+    return {};
   }
 
   onInitialize(callback: () => void): void {
