@@ -6,6 +6,7 @@ import { Typography, CircularProgress } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
 import { Theme } from "../../theme";
 import { User } from "firebase";
+import CardMedia from "@material-ui/core/CardMedia";
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -24,6 +25,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   button: {
     margin: theme.spacing(2),
   },
+  media: {
+    width: "89%",
+    paddingTop: "60.25%",
+  },
 }));
 
 interface SignInProps {
@@ -39,6 +44,11 @@ const SignIn = ({ onLoginSuccess, onLoginError, error }: SignInProps) => {
 
   return (
     <Paper className={classes.paper}>
+      <CardMedia
+        className={classes.media}
+        image={require("../Common/logo.png")}
+        title="olympic-bonzzu"
+      />
       <Typography className={classes.title} variant="h5" color="textPrimary">
         Welcome
       </Typography>
@@ -59,7 +69,7 @@ const SignIn = ({ onLoginSuccess, onLoginError, error }: SignInProps) => {
             Sign in
           </Button>
           {error && (
-            <Typography variant="h6" color="error">
+            <Typography variant="subtitle1" color="error">
               {error}
             </Typography>
           )}
