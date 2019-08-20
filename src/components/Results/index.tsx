@@ -10,12 +10,12 @@ import { Tournament, MatchDay } from "../../types";
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20
-  }
+    padding: 20,
+  },
 });
 
 const ResultsContainer = ({
-  match
+  match,
 }: RouteComponentProps<{ idTournament: string }>) => {
   const [tournament, setTournament] = useState<Tournament | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -36,15 +36,34 @@ const ResultsContainer = ({
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match.params.idTournament]);
 
-  const handleTeamSelected = (teamId: string, matchDay: number) => {
+  const invalidMatchSelected = (
+    teamId: string,
+    matchDay: number
+  ): boolean | undefined => {
     if (!tournament) return;
+    const matchDayFound = tournament.schedule.find(
+      md => md.matchDay === matchDay
+    );
+    if (matchDayFound) {
+      const freeMatch = matchDayFound.matches.find(m =>
+        m.teams.some(t => t.members.length <= 0)
+      );
+      if (freeMatch) {
+        return freeMatch.teams.some(t => t.id == teamId);
+      }
+    }
+  };
+
+  const handleTeamSelected = (teamId: string, matchDay: number) => {
+    if (!tournament || invalidMatchSelected(teamId, matchDay)) return;
+
     const newSchedule = tournament.schedule.map(md => {
       if (md.matchDay === matchDay) {
         const newMatches = md.matches.map(m => {
           if (m.teams.some(t => t.id === teamId)) {
             return {
               ...m,
-              result: teamId
+              result: teamId,
             };
           } else {
             return m;
