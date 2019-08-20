@@ -89,7 +89,7 @@ const SignIn = ({ onLoginSuccess, onLoginError, error }: SignInProps) => {
       onLoginError(error);
     }
     if (!user) {
-      onLoginError("User is undefined");
+      onLoginError("We are really sorry, something went wrong :(");
     } else {
       onLoginSuccess(user);
     }
