@@ -49,7 +49,7 @@ const ResultsContainer = ({
         m.teams.some(t => t.members.length <= 0)
       );
       if (freeMatch) {
-        return freeMatch.teams.some(t => t.id == teamId);
+        return freeMatch.teams.some(t => t.id === teamId);
       }
     }
   };

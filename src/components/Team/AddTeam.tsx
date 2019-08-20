@@ -85,6 +85,10 @@ const AddTeam = ({ history }: RouteComponentProps) => {
             variant="outlined"
             label="Name"
           />
+
+          <Typography variant="h5" color="textPrimary">
+            Members
+          </Typography>
           {!loading ? (
             <SelectableList
               items={userDisplayNames}
