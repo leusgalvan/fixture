@@ -4,7 +4,8 @@ import {
   ListItem,
   ListItemText,
   Typography,
-  Box
+  Box,
+  Checkbox
 } from "@material-ui/core";
 import EmptyFeedbackImage from "../Common/EmptyFeedbackImage";
 
@@ -30,6 +31,8 @@ const SelectableList = ({
           key={i}
           selected={isSelected(i)}
         >
+          <Checkbox checked={isSelected(i)} onChange={() => onItemClicked(i)}
+              color="primary"/>
           <ListItemText primary={item} />
         </ListItem>
       ))}
