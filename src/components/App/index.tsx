@@ -8,7 +8,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
+  Redirect
 } from "react-router-dom";
 import MainMenu from "../MainMenu";
 import PrivateRoute from "../PrivateRoute";
@@ -21,7 +21,7 @@ import {
   AppContext,
   reducerApp,
   initialState,
-  AppActions,
+  AppActions
 } from "../../state/index";
 
 const App = () => {
@@ -33,10 +33,11 @@ const App = () => {
       setInitialized(true);
       dispatch({
         type: AppActions.AUTH_STATE_CHANGED,
-        payload: firebase.getCurrentUser(),
+        payload: firebase.getCurrentUser()
       });
     });
-  }, [firebase]);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return initialized ? (
     <AppContext.Provider value={{ ...state, dispatch }}>
       <Router>

@@ -12,8 +12,8 @@ import { Link } from "react-router-dom";
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20,
-  },
+    padding: 20
+  }
 });
 
 interface StandingsContainerRouteParams {
@@ -21,7 +21,7 @@ interface StandingsContainerRouteParams {
 }
 
 const StandingsContainer = ({
-  match,
+  match
 }: RouteComponentProps<StandingsContainerRouteParams>) => {
   const [tournament, setTournament] = useState<Tournament | null>(null);
 
@@ -38,7 +38,7 @@ const StandingsContainer = ({
     };
     fetchTournamentFromDb();
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [match.params.idTournament]);
+  }, []);
 
   return (
     <Grid container justify={"center"}>
@@ -62,9 +62,14 @@ const StandingsContainer = ({
             <TournamentView schedule={tournament.schedule} />
           </Grid>
           <Grid item>
-              <Button component={Link} to={`/results/${tournament.id}`} color="primary" variant="contained">
-                Edit results
-              </Button>
+            <Button
+              component={Link}
+              to={`/results/${tournament.id}`}
+              color="primary"
+              variant="contained"
+            >
+              Edit results
+            </Button>
           </Grid>
         </>
       ) : (

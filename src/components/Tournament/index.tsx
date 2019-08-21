@@ -138,7 +138,7 @@ const TournamentListView = () => {
           </Box>
         )}
       </Paper>
-      <Link to="/tournament/add" className={classes.link} >
+      <Link to="/tournament/add" className={classes.link}>
         <AddButton className={classes.add} />
       </Link>
     </>
