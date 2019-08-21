@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import { AppContext } from "../../state";
+import { IconButton, Menu, MenuItem } from "@material-ui/core";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,6 +29,18 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const NavBar = () => {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const { user } = useContext(AppContext);
+
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <div className={classes.root}>
@@ -34,23 +49,53 @@ const NavBar = () => {
           <Typography variant="h6" className={classes.title}>
             Olympic Bonzzu
           </Typography>
-          <Button
-            component={Link}
-            to="/mainMenu"
-            className={classes.linkButtons}
-          >
-            Home
-          </Button>
-          <Button
-            component={Link}
-            to="/tournament"
-            className={classes.linkButtons}
-          >
-            Tournaments
-          </Button>
-          <Button component={Link} to="/team" className={classes.linkButtons}>
-            Teams
-          </Button>
+          {user && (
+            <>
+              <Button
+                component={Link}
+                to="/mainMenu"
+                className={classes.linkButtons}
+              >
+                Home
+              </Button>
+              <Button
+                component={Link}
+                to="/tournament"
+                className={classes.linkButtons}
+              >
+                Tournaments
+              </Button>
+              <Button
+                component={Link}
+                to="/team"
+                className={classes.linkButtons}
+              >
+                Teams
+              </Button>
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="profile-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem>{user.displayName}</MenuItem>
+                <MenuItem>{user.email}</MenuItem>
+              </Menu>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </div>
