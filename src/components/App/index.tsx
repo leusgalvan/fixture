@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useReducer } from "react";
 import { FirebaseContext } from "../Firebase";
 import Home from "../Home";
 import AddTournament from "../Tournament/AddTournament";
@@ -8,7 +8,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 import MainMenu from "../MainMenu";
 import PrivateRoute from "../PrivateRoute";
@@ -17,20 +17,28 @@ import ResultsContainer from "../Results";
 import AddTeam from "../Team/AddTeam";
 import { Container, LinearProgress } from "@material-ui/core";
 import NavBar from "../NavBar";
-import { AppContext } from "../../state/index";
+import {
+  AppContext,
+  reducerApp,
+  initialState,
+  AppActions,
+} from "../../state/index";
 
 const App = () => {
   const firebase = useContext(FirebaseContext);
   const [initialized, setInitialized] = useState(false);
-  const [user, setUser] = useState(firebase.getCurrentUser());
+  const [state, dispatch] = useReducer(reducerApp, initialState);
   useEffect(() => {
     firebase.onInitialize(() => {
       setInitialized(true);
-      setUser(firebase.getCurrentUser());
+      dispatch({
+        type: AppActions.AUTH_STATE_CHANGED,
+        payload: firebase.getCurrentUser(),
+      });
     });
   }, [firebase]);
   return initialized ? (
-    <AppContext.Provider value={{ user }}>
+    <AppContext.Provider value={{ ...state, dispatch }}>
       <Router>
         <NavBar />
         <Container>

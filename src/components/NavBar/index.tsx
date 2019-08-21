@@ -6,41 +6,42 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { AppContext } from "../../state";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-      marginBottom: 20
+      marginBottom: 20,
     },
     menuButton: {
-      marginRight: theme.spacing(2)
+      marginRight: theme.spacing(2),
     },
     title: {
-      flexGrow: 1
+      flexGrow: 1,
     },
     linkButtons: {
-      color: "white"
-    }
+      color: "white",
+    },
   })
 );
 
 const NavBar = () => {
   const classes = useStyles();
-  //const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   const { user } = useContext(AppContext);
 
-  /* const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-  }
+  };
 
-  const handleMenuClose = () => {
+  const handleClose = () => {
     setAnchorEl(null);
-  }
-*/
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -75,11 +76,24 @@ const NavBar = () => {
                 edge="end"
                 aria-label="account of current user"
                 aria-haspopup="true"
-                //onClick={handleProfileMenuOpen}
+                onClick={handleProfileMenuOpen}
                 color="inherit"
               >
                 <AccountCircle />
               </IconButton>
+              <Menu
+                id="profile-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem>{user.displayName}</MenuItem>
+                <MenuItem>{user.email}</MenuItem>
+              </Menu>
             </>
           )}
         </Toolbar>
