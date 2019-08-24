@@ -126,9 +126,14 @@ export class Firebase {
       .delete();
   }
 
-  async fetchAllUsers(): Promise<User[]> {
-    const snapshot = await this.db.collection(USER_COLLECTION).get();
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as User[];
+  fetchAllUsers(onUsersFetched: (users: User[]) => void): Unsuscribe {
+    return this.db.collection(USER_COLLECTION).onSnapshot(snapshot => {
+      const users = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as User[];
+      onUsersFetched(users);
+    });
   }
 
   async fetchAllTournaments(): Promise<Tournament[]> {
