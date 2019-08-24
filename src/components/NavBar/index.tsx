@@ -15,17 +15,17 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-      marginBottom: 20
+      marginBottom: 20,
     },
     menuButton: {
-      marginRight: theme.spacing(2)
+      marginRight: theme.spacing(2),
     },
     title: {
-      flexGrow: 1
+      flexGrow: 1,
     },
     linkButtons: {
-      color: "white"
-    }
+      color: "white",
+    },
   })
 );
 

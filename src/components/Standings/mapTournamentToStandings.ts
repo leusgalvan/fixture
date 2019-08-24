@@ -24,12 +24,12 @@ export default function mapTournamentToStandings(
           teamId: team.id,
           teamName: team.name,
           score: 0,
-          gamesPlayed: 0
+          gamesPlayed: 0,
         }));
 
       const newStandingsSoFar: Standing[] = [
         ...standingsSoFar,
-        ...standingsWithNoGames
+        ...standingsWithNoGames,
       ];
 
       const maybeWinnerTeamId = match.result;
@@ -43,7 +43,7 @@ export default function mapTournamentToStandings(
         return {
           ...standing,
           score: standing.score + deltaScore,
-          gamesPlayed: standing.gamesPlayed + deltaGamesPlayed
+          gamesPlayed: standing.gamesPlayed + deltaGamesPlayed,
         };
       });
     }, []);

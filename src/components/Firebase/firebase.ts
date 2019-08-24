@@ -103,15 +103,20 @@ export class Firebase {
     return result;
   }
 
-  async fetchTournamentById(idTournament: string): Promise<Tournament> {
-    const result = await this.db
+  fetchTournamentById(
+    idTournament: string,
+    onTournamentFetched: (tournament: Tournament) => void
+  ): Unsuscribe {
+    return this.db
       .collection(TOURNAMENT_COLLECTION)
       .doc(idTournament)
-      .get();
-
-    const tournament = result.data() as Tournament;
-
-    return { ...tournament, id: result.id };
+      .onSnapshot(snapshot => {
+        const tournament = {
+          id: snapshot.id,
+          ...snapshot.data()
+        } as Tournament;
+        onTournamentFetched(tournament);
+      });
   }
 
   async addTeam(newTeam: Omit<Team, "id">) {
