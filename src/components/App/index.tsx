@@ -8,7 +8,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 import MainMenu from "../MainMenu";
 import PrivateRoute from "../PrivateRoute";
@@ -21,8 +21,9 @@ import {
   AppContext,
   reducerApp,
   initialState,
-  AppActions
+  AppActions,
 } from "../../state/index";
+import TeamGenerator from "../TeamGenerator";
 
 const App = () => {
   const firebase = useContext(FirebaseContext);
@@ -33,7 +34,7 @@ const App = () => {
       setInitialized(true);
       dispatch({
         type: AppActions.AUTH_STATE_CHANGED,
-        payload: firebase.getCurrentUser()
+        payload: firebase.getCurrentUser(),
       });
     });
     //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,6 +52,11 @@ const App = () => {
               exact
               path="/tournament/add"
               component={AddTournament}
+            />
+            <PrivateRoute
+              exact
+              path="/tournament/generateTeams"
+              component={TeamGenerator}
             />
             <PrivateRoute
               exact
