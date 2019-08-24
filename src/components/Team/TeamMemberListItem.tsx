@@ -1,5 +1,4 @@
 import React from "react";
-import { User } from "../../types";
 import { ListItem, ListItemText } from "@material-ui/core";
 
 interface TeamMemberListItemProps {

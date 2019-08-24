@@ -14,6 +14,7 @@ import { User, Team } from "../../types";
 import SelectableList from "../SelectableList";
 import TeamListItem from "../Team/TeamListItem";
 import generateTeams from "./generateTeams";
+import { RouteComponentProps } from "react-router";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,27 +36,33 @@ const useStyles = makeStyles(theme => ({
     flex: 3,
   },
 
-  generate: {
+  buttonsPanel: {
     display: "flex",
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: theme.spacing(2),
+    justifyContent: "center",
+  },
+
+  generate: {
+    margin: theme.spacing(2),
+  },
+
+  save: {
+    margin: theme.spacing(2),
   },
 }));
 
-const TeamGenerator = () => {
+const TeamGenerator = ({ history }: RouteComponentProps) => {
   const classes = useStyles();
   const firebase = useContext(FirebaseContext);
-  const [teamSize, setTeamSize] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [teamSize, setTeamSize] = useState<number>(2);
+  const [fetchingUsers, setFetchingUsers] = useState<boolean>(true);
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUserIndexes, setSelectedUserIndexes] = useState<number[]>([]);
-  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [saving, setSaving] = useState<boolean>(false);
   const [generatedTeams, setGeneratedTeams] = useState<Omit<Team, "id">[]>([]);
   useEffect(() => {
     return firebase.fetchAllUsers(allUsers => {
       setUsers(allUsers);
-      setLoading(false);
+      setFetchingUsers(false);
     });
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -70,12 +77,21 @@ const TeamGenerator = () => {
     setTeamSize(parseInt(event.target.value));
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitting(true);
+    setSaving(true);
+    await Promise.all(generatedTeams.map(team => firebase.addTeam(team)));
+    history.push("/tournament/add");
+  };
+  const handleGenerate = async (event: React.MouseEvent<HTMLButtonElement>) => {
     const selectedUsers = selectedUserIndexes.map(i => users[i]);
     const generatedTeams = generateTeams(selectedUsers, teamSize);
     setGeneratedTeams(generatedTeams);
-    setSubmitting(false);
   };
+  const isGenerateDisabled: boolean =
+    teamSize <= 0 ||
+    selectedUserIndexes.length === 0 ||
+    selectedUserIndexes.length % teamSize !== 0;
+
+  const isSaveDisabled: boolean = generatedTeams.length === 0;
 
   return (
     <>
@@ -100,7 +116,7 @@ const TeamGenerator = () => {
             <Typography variant="h5" color="textPrimary">
               Members
             </Typography>
-            {!loading ? (
+            {!fetchingUsers ? (
               <SelectableList
                 items={userDisplayNames}
                 selectedIndexes={selectedUserIndexes}
@@ -123,15 +139,28 @@ const TeamGenerator = () => {
         </Paper>
       </div>
 
-      <Button
-        className={classes.generate}
-        variant="contained"
-        color="primary"
-        type="submit"
-        form="generateTeamsForm"
-      >
-        {submitting ? <CircularProgress /> : "Generate"}
-      </Button>
+      <div className={classes.buttonsPanel}>
+        <Button
+          className={classes.generate}
+          variant="contained"
+          color="primary"
+          onClick={handleGenerate}
+          disabled={isGenerateDisabled}
+        >
+          Generate
+        </Button>
+
+        <Button
+          className={classes.save}
+          variant="contained"
+          color="primary"
+          type="submit"
+          form="generateTeamsForm"
+          disabled={isSaveDisabled}
+        >
+          {saving ? <CircularProgress /> : "Save"}
+        </Button>
+      </div>
     </>
   );
 };
