@@ -136,12 +136,16 @@ export class Firebase {
     });
   }
 
-  async fetchAllTournaments(): Promise<Tournament[]> {
-    const snapshot = await this.db.collection(TOURNAMENT_COLLECTION).get();
-    return snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as Tournament[];
+  fetchAllTournaments(
+    onTournamentsFetched: (tournaments: Tournament[]) => void
+  ): Unsuscribe {
+    return this.db.collection(TOURNAMENT_COLLECTION).onSnapshot(snapshot => {
+      const tournaments = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Tournament[];
+      onTournamentsFetched(tournaments);
+    });
   }
 
   async deleteTournament(tournamentId: string): Promise<void> {
