@@ -44,15 +44,14 @@ const TeamView = () => {
   const [searchText, setSearchText] = useState("");
   const [filterByLoggedUser, setFilterByLoggedUser] = useState(false);
   const [teams, setTeams] = useState<Team[]>([]);
-  const [refetch, setRefetch] = useState<Boolean>(false);
 
   useEffect(() => {
-    firebase.fetchAllTeams().then(allTeams => {
+    return firebase.fetchAllTeams(allTeams => {
       setTeams(allTeams);
       setLoading(false);
     });
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refetch]);
+  }, []);
   const filterteams = (teams: Team[]) => {
     const user = firebase.getCurrentUser();
     const userId = user && user.uid;
@@ -67,9 +66,7 @@ const TeamView = () => {
   const filteredTeams = filterteams(teams);
 
   const handleDelete = async (team: Team) => {
-    setLoading(true);
     await firebase.deleteTeam(team.id);
-    setRefetch(!refetch);
   };
   return (
     <>
@@ -125,7 +122,7 @@ const TeamView = () => {
           </Box>
         )}
       </Paper>
-      <Link to="/team/add" className={classes.link} >
+      <Link to="/team/add" className={classes.link}>
         <AddButton className={classes.add} />
       </Link>
     </>

@@ -10,12 +10,12 @@ import { Tournament } from "../../types";
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20
-  }
+    padding: 20,
+  },
 });
 
 const ResultsContainer = ({
-  match
+  match,
 }: RouteComponentProps<{ idTournament: string }>) => {
   const [tournament, setTournament] = useState<Tournament | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -25,14 +25,9 @@ const ResultsContainer = ({
   const classes = useStyles();
 
   useEffect(() => {
-    const fetchTournamentFromDb = async () => {
-      const data = await firebase.fetchTournamentById(
-        match.params.idTournament
-      );
-      setTournament(data);
-    };
-    fetchTournamentFromDb();
-
+    return firebase.fetchTournamentById(match.params.idTournament, data =>
+      setTournament(data)
+    );
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -63,7 +58,7 @@ const ResultsContainer = ({
           if (m.teams.some(t => t.id === teamId)) {
             return {
               ...m,
-              result: teamId
+              result: teamId,
             };
           } else {
             return m;

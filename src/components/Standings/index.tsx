@@ -12,8 +12,8 @@ import { Link } from "react-router-dom";
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20
-  }
+    padding: 20,
+  },
 });
 
 interface StandingsContainerRouteParams {
@@ -21,7 +21,7 @@ interface StandingsContainerRouteParams {
 }
 
 const StandingsContainer = ({
-  match
+  match,
 }: RouteComponentProps<StandingsContainerRouteParams>) => {
   const [tournament, setTournament] = useState<Tournament | null>(null);
 
@@ -30,13 +30,9 @@ const StandingsContainer = ({
   const classes = useStyles();
 
   useEffect(() => {
-    const fetchTournamentFromDb = async () => {
-      const data = await firebase.fetchTournamentById(
-        match.params.idTournament
-      );
-      setTournament(data);
-    };
-    fetchTournamentFromDb();
+    firebase.fetchTournamentById(match.params.idTournament, data =>
+      setTournament(data)
+    );
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

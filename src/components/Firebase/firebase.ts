@@ -22,6 +22,9 @@ interface LoginResult {
   user?: FirebaseUser;
   error?: string;
 }
+
+type Unsuscribe = () => void;
+
 export class Firebase {
   private readonly provider = new app.auth.GoogleAuthProvider();
   private auth: app.auth.Auth;
@@ -74,9 +77,13 @@ export class Firebase {
     return this.auth.currentUser;
   }
 
-  async fetchAllTeams(): Promise<Team[]> {
-    const snapshot = await this.db.collection(TEAM_COLLECTION).get();
-    return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Team));
+  fetchAllTeams(onTeamsFetched: (teams: Team[]) => void): Unsuscribe {
+    return this.db.collection(TEAM_COLLECTION).onSnapshot(snapshot => {
+      const teams = snapshot.docs.map(
+        doc => ({ ...doc.data(), id: doc.id } as Team)
+      );
+      onTeamsFetched(teams);
+    });
   }
 
   async saveTournament(
@@ -96,15 +103,20 @@ export class Firebase {
     return result;
   }
 
-  async fetchTournamentById(idTournament: string): Promise<Tournament> {
-    const result = await this.db
+  fetchTournamentById(
+    idTournament: string,
+    onTournamentFetched: (tournament: Tournament) => void
+  ): Unsuscribe {
+    return this.db
       .collection(TOURNAMENT_COLLECTION)
       .doc(idTournament)
-      .get();
-
-    const tournament = result.data() as Tournament;
-
-    return { ...tournament, id: result.id };
+      .onSnapshot(snapshot => {
+        const tournament = {
+          id: snapshot.id,
+          ...snapshot.data()
+        } as Tournament;
+        onTournamentFetched(tournament);
+      });
   }
 
   async addTeam(newTeam: Omit<Team, "id">) {
@@ -119,17 +131,26 @@ export class Firebase {
       .delete();
   }
 
-  async fetchAllUsers(): Promise<User[]> {
-    const snapshot = await this.db.collection(USER_COLLECTION).get();
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as User[];
+  fetchAllUsers(onUsersFetched: (users: User[]) => void): Unsuscribe {
+    return this.db.collection(USER_COLLECTION).onSnapshot(snapshot => {
+      const users = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as User[];
+      onUsersFetched(users);
+    });
   }
 
-  async fetchAllTournaments(): Promise<Tournament[]> {
-    const snapshot = await this.db.collection(TOURNAMENT_COLLECTION).get();
-    return snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as Tournament[];
+  fetchAllTournaments(
+    onTournamentsFetched: (tournaments: Tournament[]) => void
+  ): Unsuscribe {
+    return this.db.collection(TOURNAMENT_COLLECTION).onSnapshot(snapshot => {
+      const tournaments = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Tournament[];
+      onTournamentsFetched(tournaments);
+    });
   }
 
   async deleteTournament(tournamentId: string): Promise<void> {

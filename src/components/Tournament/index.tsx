@@ -44,15 +44,14 @@ const TournamentListView = () => {
   const [searchText, setSearchText] = useState("");
   const [filterByLoggedUser, setFilterByLoggedUser] = useState(false);
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
-  const [refetch, setRefetch] = useState<Boolean>(false);
 
   useEffect(() => {
-    firebase.fetchAllTournaments().then(allTournaments => {
+    return firebase.fetchAllTournaments(allTournaments => {
       setTournaments(allTournaments);
       setLoading(false);
     });
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refetch]);
+  }, []);
   const filterTournaments = (teams: Tournament[]) => {
     const user = firebase.getCurrentUser();
     const userId = user && user.uid;
@@ -79,7 +78,6 @@ const TournamentListView = () => {
   const handleDelete = async (tournament: Tournament) => {
     setLoading(true);
     await firebase.deleteTournament(tournament.id);
-    setRefetch(!refetch);
   };
 
   return (

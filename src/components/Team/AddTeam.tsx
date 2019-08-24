@@ -40,7 +40,7 @@ const AddTeam = ({ history }: RouteComponentProps) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
-    firebase.fetchAllUsers().then(allUsers => {
+    return firebase.fetchAllUsers(allUsers => {
       setUsers(allUsers);
       setLoading(false);
     });

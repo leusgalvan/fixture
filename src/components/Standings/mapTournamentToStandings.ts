@@ -1,6 +1,5 @@
 import { Tournament, Match } from "../../types";
 import { Standing } from "./types";
-import _ from "lodash";
 
 /**
  * Maps a tournament to an array representing the standings
