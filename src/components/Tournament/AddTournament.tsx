@@ -40,8 +40,7 @@ const AddTournament = ({ history }: RouteComponentProps) => {
   const classes = useStyles();
 
   useEffect(() => {
-    const fetchTeamsFromDB = async () => {
-      const data = await firebase.fetchAllTeams();
+    return firebase.fetchAllTeams(data => {
       const teamOptions = data.map(team => ({
         value: team.name,
         label: team.name,
@@ -49,8 +48,7 @@ const AddTournament = ({ history }: RouteComponentProps) => {
       }));
       setAvailableTeams(teamOptions);
       setLoading(false);
-    };
-    fetchTeamsFromDB();
+    });
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

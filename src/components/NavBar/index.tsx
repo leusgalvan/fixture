@@ -4,7 +4,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { Link, withRouter, RouteProps } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { AppContext } from "../../state";
 import { IconButton, Menu, MenuItem, Avatar } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -15,17 +15,17 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-      marginBottom: 20,
+      marginBottom: 20
     },
     menuButton: {
-      marginRight: theme.spacing(2),
+      marginRight: theme.spacing(2)
     },
     title: {
-      flexGrow: 1,
+      flexGrow: 1
     },
     linkButtons: {
-      color: "white",
-    },
+      color: "white"
+    }
   })
 );
 
@@ -55,6 +55,7 @@ const NavBar = ({ history }: RouteChildrenProps) => {
     await firebase.logout();
     setOpen(false);
     history.push("/");
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

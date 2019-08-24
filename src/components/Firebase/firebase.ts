@@ -22,6 +22,9 @@ interface LoginResult {
   user?: FirebaseUser;
   error?: string;
 }
+
+type Unsuscribe = () => void;
+
 export class Firebase {
   private readonly provider = new app.auth.GoogleAuthProvider();
   private auth: app.auth.Auth;
@@ -74,9 +77,13 @@ export class Firebase {
     return this.auth.currentUser;
   }
 
-  async fetchAllTeams(): Promise<Team[]> {
-    const snapshot = await this.db.collection(TEAM_COLLECTION).get();
-    return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Team));
+  fetchAllTeams(onTeamsFetched: (teams: Team[]) => void): Unsuscribe {
+    return this.db.collection(TEAM_COLLECTION).onSnapshot(snapshot => {
+      const teams = snapshot.docs.map(
+        doc => ({ ...doc.data(), id: doc.id } as Team)
+      );
+      onTeamsFetched(teams);
+    });
   }
 
   async saveTournament(
