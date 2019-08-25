@@ -15,6 +15,7 @@ import SelectableList from "../SelectableList";
 import TeamListItem from "../Team/TeamListItem";
 import generateTeams from "./generateTeams";
 import { RouteComponentProps } from "react-router";
+import { AppActions, AppContext } from "../../state/index";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,6 +60,7 @@ const TeamGenerator = ({ history }: RouteComponentProps) => {
   const [selectedUserIndexes, setSelectedUserIndexes] = useState<number[]>([]);
   const [saving, setSaving] = useState<boolean>(false);
   const [generatedTeams, setGeneratedTeams] = useState<Omit<Team, "id">[]>([]);
+  const { dispatch } = useContext(AppContext);
   useEffect(() => {
     return firebase.fetchAllUsers(allUsers => {
       setUsers(allUsers);
@@ -78,7 +80,13 @@ const TeamGenerator = ({ history }: RouteComponentProps) => {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSaving(true);
-    await Promise.all(generatedTeams.map(team => firebase.addTeam(team)));
+    const savedTeams = await Promise.all(
+      generatedTeams.map(team => firebase.addTeam(team))
+    );
+    dispatch({
+      type: AppActions.TEAMS_GENERATED,
+      payload: savedTeams,
+    });
     history.push("/tournament/add");
   };
   const handleGenerate = async (event: React.MouseEvent<HTMLButtonElement>) => {

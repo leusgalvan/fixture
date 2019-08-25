@@ -1,19 +1,22 @@
 import React from "react";
 import { User } from "firebase";
 import { Action, AppActions } from "./actions";
+import { Team } from "../types";
 export { AppActions };
 
 interface AppState {
   user: User | null;
+  generatedTeams: Team[];
   dispatch: React.Dispatch<Action>;
 }
 
-export const AppContext = React.createContext<Partial<AppState>>({});
-
 export const initialState = {
   user: null,
+  generatedTeams: [],
   dispatch: () => {},
 };
+
+export const AppContext = React.createContext<AppState>(initialState);
 
 export const reducerApp = (state: AppState, action: Action) => {
   switch (action.type) {
@@ -21,6 +24,11 @@ export const reducerApp = (state: AppState, action: Action) => {
       return {
         ...state,
         user: action.payload,
+      };
+    case AppActions.TEAMS_GENERATED:
+      return {
+        ...state,
+        generatedTeams: action.payload,
       };
     default:
       return state;

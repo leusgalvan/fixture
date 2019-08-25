@@ -11,12 +11,13 @@ import TextField from "@material-ui/core/TextField";
 import { Team, Tournament as TournamentType } from "../../types";
 import { ValueType } from "react-select/src/types";
 import { RouteComponentProps } from "react-router";
+import { AppContext } from "../../state";
 
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20
-  }
+    padding: 20,
+  },
 });
 
 interface TeamOption extends Team {
@@ -24,8 +25,20 @@ interface TeamOption extends Team {
   label: string;
 }
 
+const buildTeamOptions = (teams: Team[]): TeamOption[] => {
+  return teams.map(team => ({
+    value: team.name,
+    label: team.name,
+    ...team,
+  }));
+};
+
 const AddTournament = ({ history }: RouteComponentProps) => {
-  const [selectedTeams, setSelectedTeams] = useState<TeamOption[]>([]);
+  const { generatedTeams } = useContext(AppContext);
+  const initialTeamOptions = buildTeamOptions(generatedTeams || []);
+  const [selectedTeams, setSelectedTeams] = useState<TeamOption[]>(
+    initialTeamOptions
+  );
   const [tournament, setTournament] = useState<Omit<
     TournamentType,
     "id"
@@ -44,7 +57,7 @@ const AddTournament = ({ history }: RouteComponentProps) => {
       const teamOptions = data.map(team => ({
         value: team.name,
         label: team.name,
-        ...team
+        ...team,
       }));
       setAvailableTeams(teamOptions);
       setLoading(false);
