@@ -6,10 +6,7 @@ import { User } from "../../types";
 
 describe("TeamMemberListItem", () => {
   it("should display the member's display name", () => {
-    const member: User = {
-      id: "Test id",
-      displayName: "Leus"
-    };
+    const member = "Leus";
     const teamListItem = shallow(<TeamMemberListItem member={member} />);
     expect(
       teamListItem.find(ListItemText).find({ primary: "Leus" })
