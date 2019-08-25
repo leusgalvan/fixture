@@ -30,6 +30,11 @@ export const reducerApp = (state: AppState, action: Action) => {
         ...state,
         generatedTeams: action.payload,
       };
+    case AppActions.TOURNAMENT_CREATED:
+      return {
+        ...state,
+        generatedTeams: [],
+      };
     default:
       return state;
   }

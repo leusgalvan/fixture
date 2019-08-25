@@ -11,7 +11,7 @@ import TextField from "@material-ui/core/TextField";
 import { Team, Tournament as TournamentType } from "../../types";
 import { ValueType } from "react-select/src/types";
 import { RouteComponentProps } from "react-router";
-import { AppContext } from "../../state";
+import { AppContext, AppActions } from "../../state";
 
 const useStyles = makeStyles({
   root: {
@@ -34,7 +34,7 @@ const buildTeamOptions = (teams: Team[]): TeamOption[] => {
 };
 
 const AddTournament = ({ history }: RouteComponentProps) => {
-  const { generatedTeams } = useContext(AppContext);
+  const { generatedTeams, dispatch } = useContext(AppContext);
   const initialTeamOptions = buildTeamOptions(generatedTeams || []);
   const [selectedTeams, setSelectedTeams] = useState<TeamOption[]>(
     initialTeamOptions
@@ -61,6 +61,10 @@ const AddTournament = ({ history }: RouteComponentProps) => {
       }));
       setAvailableTeams(teamOptions);
       setLoading(false);
+      dispatch({
+        type: AppActions.TOURNAMENT_CREATED,
+        payload: null,
+      });
     });
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
