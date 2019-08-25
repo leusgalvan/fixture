@@ -93,6 +93,7 @@ const TeamGenerator = ({ history }: RouteComponentProps) => {
     const selectedUsers = selectedUserIndexes.map(i => users[i]);
     const generatedTeams = generateTeams(selectedUsers, teamSize);
     setGeneratedTeams(generatedTeams);
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
   const isGenerateDisabled: boolean =
     teamSize <= 0 ||
