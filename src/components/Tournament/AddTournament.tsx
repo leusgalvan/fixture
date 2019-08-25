@@ -12,6 +12,7 @@ import { Team, Tournament as TournamentType } from "../../types";
 import { ValueType } from "react-select/src/types";
 import { RouteComponentProps } from "react-router";
 import { AppContext, AppActions } from "../../state";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -127,6 +128,16 @@ const AddTournament = ({ history }: RouteComponentProps) => {
               onClick={handleGenerateClick}
             >
               Generate league
+            </Button>
+          </Grid>
+          <Grid className={classes.root} item xs={12}>
+            <Button
+              component={Link}
+              to="/tournament/generateTeams"
+              variant="contained"
+              color="secondary"
+            >
+              Generate random teams
             </Button>
           </Grid>
           {tournament && (
