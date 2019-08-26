@@ -1,5 +1,12 @@
 import React from "react";
-import { Paper, Typography, ButtonBase, Tooltip } from "@material-ui/core";
+import {
+  Paper,
+  Typography,
+  ButtonBase,
+  Tooltip,
+  List,
+  ListItem,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "../../theme";
 import { Team } from "../../types";
@@ -25,15 +32,19 @@ interface TeamViewProps {
 const TeamView = ({ team, winner, onTeamSelected }: TeamViewProps) => {
   const classes = useStyles({ winner });
 
-  const membersName = team.members
-    .map(m => m.displayName)
-    .reduce((prev, curr) => {
-      return `${prev}  ${curr}`;
-    }, "Members: ");
+  const membersName = team.members.map(m => m.displayName);
   return (
     <Paper className={classes.teams}>
       <ButtonBase onClick={onTeamSelected}>
-        <Tooltip title={membersName}>
+        <Tooltip
+          title={
+            <List>
+              {membersName.map(name => (
+                <ListItem>{name}</ListItem>
+              ))}
+            </List>
+          }
+        >
           <Typography variant="h5">{team.name}</Typography>
         </Tooltip>
       </ButtonBase>
