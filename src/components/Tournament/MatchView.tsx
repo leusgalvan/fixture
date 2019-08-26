@@ -35,7 +35,7 @@ const MatchView = ({ match, matchDay, handleTeamSelected }: MatchViewProps) => {
             handleTeamSelected && handleTeamSelected(team1.id, matchDay)
           }
           winner={team1.id === match.result}
-          teamName={team1.name}
+          team={team1}
         />
       </Grid>
       <Grid className={classes.matchTitle} item xs={2}>
@@ -47,7 +47,7 @@ const MatchView = ({ match, matchDay, handleTeamSelected }: MatchViewProps) => {
             handleTeamSelected && handleTeamSelected(team2.id, matchDay)
           }
           winner={team2.id === match.result}
-          teamName={team2.name}
+          team={team2}
         />
       </Grid>
     </Grid>
