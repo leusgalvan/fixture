@@ -11,12 +11,14 @@ import TextField from "@material-ui/core/TextField";
 import { Team, Tournament as TournamentType } from "../../types";
 import { ValueType } from "react-select/src/types";
 import { RouteComponentProps } from "react-router";
+import { AppContext, AppActions } from "../../state";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: 20
-  }
+    padding: 20,
+  },
 });
 
 interface TeamOption extends Team {
@@ -24,8 +26,20 @@ interface TeamOption extends Team {
   label: string;
 }
 
+const buildTeamOptions = (teams: Team[]): TeamOption[] => {
+  return teams.map(team => ({
+    value: team.name,
+    label: team.name,
+    ...team,
+  }));
+};
+
 const AddTournament = ({ history }: RouteComponentProps) => {
-  const [selectedTeams, setSelectedTeams] = useState<TeamOption[]>([]);
+  const { generatedTeams, dispatch } = useContext(AppContext);
+  const initialTeamOptions = buildTeamOptions(generatedTeams || []);
+  const [selectedTeams, setSelectedTeams] = useState<TeamOption[]>(
+    initialTeamOptions
+  );
   const [tournament, setTournament] = useState<Omit<
     TournamentType,
     "id"
@@ -44,10 +58,14 @@ const AddTournament = ({ history }: RouteComponentProps) => {
       const teamOptions = data.map(team => ({
         value: team.name,
         label: team.name,
-        ...team
+        ...team,
       }));
       setAvailableTeams(teamOptions);
       setLoading(false);
+      dispatch({
+        type: AppActions.TOURNAMENT_CREATED,
+        payload: null,
+      });
     });
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -110,6 +128,16 @@ const AddTournament = ({ history }: RouteComponentProps) => {
               onClick={handleGenerateClick}
             >
               Generate league
+            </Button>
+          </Grid>
+          <Grid className={classes.root} item xs={12}>
+            <Button
+              component={Link}
+              to="/tournament/generateTeams"
+              variant="contained"
+              color="secondary"
+            >
+              Generate random teams
             </Button>
           </Grid>
           {tournament && (

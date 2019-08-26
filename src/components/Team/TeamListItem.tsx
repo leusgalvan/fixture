@@ -12,13 +12,13 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 
 export interface TeamListItemProps {
-  team: Team;
-  onDelete(team: Team): void;
+  team: Partial<Team>;
+  onDelete?(team: Partial<Team>): void;
 }
 
 const TeamListItem = ({ team, onDelete }: TeamListItemProps) => {
   const [open, setOpen] = useState(false);
-
+  const members = team.members || [];
   const handleExpand = () => {
     setOpen(!open);
   };
@@ -28,21 +28,26 @@ const TeamListItem = ({ team, onDelete }: TeamListItemProps) => {
       <ListItem button onClick={handleExpand}>
         {open ? <ExpandLess /> : <ExpandMore />}
         <ListItemText primary={team.name} />
-        <ListItemSecondaryAction>
-          <IconButton edge="end" onClick={_ => onDelete(team)}>
-            <Delete />
-          </IconButton>
-        </ListItemSecondaryAction>
+        {onDelete && (
+          <ListItemSecondaryAction>
+            <IconButton edge="end" onClick={_ => onDelete(team)}>
+              <Delete />
+            </IconButton>
+          </ListItemSecondaryAction>
+        )}
       </ListItem>
 
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div">
-          {team.members.map(member => (
-            <TeamMemberListItem
-              member={member}
-              key={`team_member_list_item_${member.id}`}
-            />
-          ))}
+          {members.map(
+            member =>
+              member && (
+                <TeamMemberListItem
+                  member={member.displayName}
+                  key={`team_member_list_item_${member.id}`}
+                />
+              )
+          )}
         </List>
       </Collapse>
     </>

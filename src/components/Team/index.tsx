@@ -21,19 +21,19 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     margin: "auto",
     width: "50%",
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
 
   link: {
-    textDecoration: "none"
+    textDecoration: "none",
   },
 
   add: {
     display: "flex",
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const TeamView = () => {
@@ -79,7 +79,7 @@ const TeamView = () => {
               <InputAdornment position="start">
                 <SearchIcon />
               </InputAdornment>
-            )
+            ),
           }}
           onChange={event => setSearchText(event.target.value)}
         />

@@ -11,7 +11,7 @@ const config = {
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_ID
+  appId: process.env.REACT_APP_ID,
 };
 
 const USER_COLLECTION = "user";
@@ -53,7 +53,7 @@ export class Firebase {
           .doc(user.uid)
           .set(
             {
-              displayName: user.displayName
+              displayName: user.displayName,
             },
             { merge: true }
           );
@@ -113,15 +113,15 @@ export class Firebase {
       .onSnapshot(snapshot => {
         const tournament = {
           id: snapshot.id,
-          ...snapshot.data()
+          ...snapshot.data(),
         } as Tournament;
         onTournamentFetched(tournament);
       });
   }
 
-  async addTeam(newTeam: Omit<Team, "id">) {
+  async addTeam(newTeam: Omit<Team, "id">): Promise<Team> {
     const ref = await this.db.collection(TEAM_COLLECTION).add(newTeam);
-    return ref.id;
+    return { id: ref.id, name: newTeam.name, members: newTeam.members };
   }
 
   async deleteTeam(teamId: string): Promise<void> {
@@ -135,7 +135,7 @@ export class Firebase {
     return this.db.collection(USER_COLLECTION).onSnapshot(snapshot => {
       const users = snapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       })) as User[];
       onUsersFetched(users);
     });
@@ -147,7 +147,7 @@ export class Firebase {
     return this.db.collection(TOURNAMENT_COLLECTION).onSnapshot(snapshot => {
       const tournaments = snapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       })) as Tournament[];
       onTournamentsFetched(tournaments);
     });
