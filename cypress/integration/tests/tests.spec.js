@@ -1,6 +1,6 @@
 const componentsLoginPage = {
   logInButton: '//*[@id="root"]/div/div/button/span[1]',
-  title: '//*[@id="root"]/div/div/h5'
+  title: '//*[@id="root"]/div/div/h5',
 };
 
 describe("Login Tests", () => {
@@ -17,5 +17,9 @@ describe("Login Tests", () => {
       "have.class",
       "MuiButton-label"
     );
+  });
+
+  it("Login", () => {
+    cy.xpath(componentsLoginPage.logInButton).click();
   });
 });
