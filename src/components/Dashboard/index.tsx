@@ -14,7 +14,7 @@ import { Tournament } from "../../types";
 import { Link } from "react-router-dom";
 import StandingsIcon from "../StandingsIcon";
 import { makeStyles } from "@material-ui/styles";
-import { buildData } from "./mapTournamentsToData"
+import { buildData } from "./mapTournamentsToData";
 
 const useStyles = makeStyles({
   infoSection: {
@@ -36,14 +36,15 @@ const Dashboard = () => {
         tournaments,
         firebase.getCurrentUser()
       );
-      setUserTournaments(userTournaments as Tournament[]);
-      setMatchesWon(matchesWon as number);
-      setMatchesLost(matchesLost as number);
+      setUserTournaments(userTournaments);
+      setMatchesWon(matchesWon);
+      setMatchesLost(matchesLost);
     });
   }, []);
+
   const options = {
     labels: ["Matches won", "Matches lost"],
-    colors:['#b7e778', '#f67e7d'],
+    colors: ["#b7e778", "#f67e7d"],
     responsive: [
       {
         breakpoint: 480,
