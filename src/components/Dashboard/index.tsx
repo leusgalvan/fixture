@@ -43,6 +43,7 @@ const Dashboard = () => {
   }, []);
   const options = {
     labels: ["Matches won", "Matches lost"],
+    colors:['#b7e778', '#f67e7d'],
     responsive: [
       {
         breakpoint: 480,

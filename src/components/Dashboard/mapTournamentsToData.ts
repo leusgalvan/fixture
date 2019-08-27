@@ -16,7 +16,7 @@ export const buildData = (tournaments: Tournament[], user: User | null) => {
     console.log("usermatches ", userMatches);
     const [matchesWon, matchesLost] = userMatches.reduce(
       ([won, lost], match) => {
-        const userTeam = match.teams.find(t => t.members.some(m => user.uid));
+        const userTeam = match.teams.find(t => t.members.some(m => m.id === user.uid));
         return [
           won + (userTeam && match.result === userTeam.id ? 1 : 0),
           lost +
