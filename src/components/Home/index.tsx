@@ -16,7 +16,7 @@ const Home = () => {
           error={error}
         />
       )}
-      {user && <Redirect to="/mainMenu" />}
+      {user && <Redirect to="/dashboard" />}
     </>
   );
 };

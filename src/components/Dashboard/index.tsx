@@ -6,47 +6,30 @@ import {
   ListItem,
   List,
   ListItemText,
-  IconButton
+  IconButton,
+  Paper,
 } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
 import { Tournament } from "../../types";
 import { Link } from "react-router-dom";
 import StandingsIcon from "../StandingsIcon";
-import { User } from "firebase";
+import { makeStyles } from "@material-ui/styles";
+import { buildData } from "./mapTournamentsToData"
 
-const buildData = (tournaments: Tournament[], user: User | null) => {
-  if (!user) return [[], 0, 0];
-  const userTournaments = tournaments.filter(t =>
-    t.schedule.some(md =>
-      md.matches.some(m =>
-        m.teams.some(t => t.members.some(m => m.id === user.uid))
-      )
-    )
-  );
-  const userMatches = userTournaments.flatMap(t =>
-    t.schedule.flatMap(md => md.matches)
-  );
-  const [matchesWon, matchesLost] = userMatches.reduce(
-    ([won, lost], match) => {
-      const userTeam = match.teams.find(t => t.members.some(m => user.uid));
-      return [
-        won + (userTeam && match.result === userTeam.id ? 1 : 0),
-        lost +
-          (userTeam &&
-          (match.result !== userTeam.id && match.result !== "not played")
-            ? 1
-            : 0)
-      ];
-    },
-    [0, 0]
-  );
-  return [userTournaments, matchesWon, matchesLost];
-};
+const useStyles = makeStyles({
+  infoSection: {
+    padding: 35,
+    textAlign: "center",
+  },
+});
+
 const Dashboard = () => {
   const firebase = useContext(FirebaseContext);
+  const classes = useStyles();
   const [userTournaments, setUserTournaments] = useState<Tournament[]>([]);
   const [matchesWon, setMatchesWon] = useState(0);
   const [matchesLost, setMatchesLost] = useState(0);
+
   useEffect(() => {
     return firebase.fetchAllTournaments(tournaments => {
       const [userTournaments, matchesWon, matchesLost] = buildData(
@@ -65,47 +48,50 @@ const Dashboard = () => {
         breakpoint: 480,
         options: {
           chart: {
-            width: 200
+            width: 200,
           },
           legend: {
-            position: "bottom"
-          }
-        }
-      }
-    ]
+            position: "bottom",
+          },
+        },
+      },
+    ],
   };
   const series = [matchesWon, matchesLost];
 
   return (
     <Grid container>
-      <Grid item xs={12}>
+      <Grid item xs={12} className={classes.infoSection}>
         <Typography color="primary" variant="h1">
           Personal dashboard
         </Typography>
       </Grid>
-      <Grid item xs={4}>
-        <Typography variant="h3">Your tournaments</Typography>
-        <List>
-          {userTournaments.map(t => {
-            return (
-              <ListItem button>
-                <ListItemText primary={t.name} />
-                <IconButton
-                  edge="end"
-                  component={Link}
-                  to={`/standings/${t.id}`}
-                >
-                  <StandingsIcon />
-                </IconButton>
-              </ListItem>
-            );
-          })}
-        </List>
+      <Grid item xs={6}>
+        <Paper className={classes.infoSection}>
+          <Typography variant="h3">Your tournaments</Typography>
+          <List>
+            {userTournaments.map(t => {
+              return (
+                <ListItem key={t.id} button>
+                  <ListItemText primary={t.name} />
+                  <IconButton
+                    edge="end"
+                    component={Link}
+                    to={`/standings/${t.id}`}
+                  >
+                    <StandingsIcon />
+                  </IconButton>
+                </ListItem>
+              );
+            })}
+          </List>
+        </Paper>
       </Grid>
-      <Grid xs={2} />
-      <Grid item xs={4}>
-        <Typography variant="h3">Your stats</Typography>
-        <Chart options={options} series={series} type="pie" width="500" />
+      <Grid item xs={6}>
+        <Paper className={classes.infoSection}>
+          <Typography variant="h3">Your stats</Typography>
+          <Chart options={options} series={series} type="pie" width="500" />
+        </Paper>
       </Grid>
     </Grid>
   );
