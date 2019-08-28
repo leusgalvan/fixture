@@ -14,6 +14,7 @@ import { Box, Typography, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Team } from "../../types";
 import AddButton from "../AddButton";
+import DeleteDialog from "../DeleteDialog";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -44,6 +45,7 @@ const TeamView = () => {
   const [searchText, setSearchText] = useState("");
   const [filterByLoggedUser, setFilterByLoggedUser] = useState(false);
   const [teams, setTeams] = useState<Team[]>([]);
+  const [teamIdToDelete, setTeamIdToDelete] = useState<string>("");
 
   useEffect(() => {
     return firebase.fetchAllTeams(allTeams => {
@@ -65,11 +67,26 @@ const TeamView = () => {
 
   const filteredTeams = filterteams(teams);
 
-  const handleDelete = async (team: Team) => {
-    await firebase.deleteTeam(team.id);
+  const handleDelete = (team: Team) => {
+    setTeamIdToDelete(team.id);
   };
+
+  const handleConfirmDelete = async () => {
+    await firebase.deleteTeam(teamIdToDelete);
+    setTeamIdToDelete("");
+  };
+
+  const handleCancelDelete = () => {
+    setTeamIdToDelete("");
+  };
+
   return (
     <>
+      <DeleteDialog
+        open={teamIdToDelete.length > 0}
+        onAccept={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
       <Paper className={classes.paper}>
         <TextField
           fullWidth

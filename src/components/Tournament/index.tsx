@@ -14,6 +14,7 @@ import { Box, Typography, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Tournament } from "../../types";
 import AddButton from "../AddButton";
+import DeleteDialog from "../DeleteDialog";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -21,19 +22,19 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     margin: "auto",
     width: "50%",
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
 
   link: {
-    textDecoration: "none"
+    textDecoration: "none",
   },
 
   add: {
     display: "flex",
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const TournamentListView = () => {
@@ -44,6 +45,7 @@ const TournamentListView = () => {
   const [searchText, setSearchText] = useState("");
   const [filterByLoggedUser, setFilterByLoggedUser] = useState(false);
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [tournamentIdToDelete, setTournamentIdToDelete] = useState<string>("");
 
   useEffect(() => {
     return firebase.fetchAllTournaments(allTournaments => {
@@ -75,13 +77,26 @@ const TournamentListView = () => {
 
   const filteredTournaments = filterTournaments(tournaments);
 
-  const handleDelete = async (tournament: Tournament) => {
-    setLoading(true);
-    await firebase.deleteTournament(tournament.id);
+  const handleDelete = (tournament: Tournament) => {
+    setTournamentIdToDelete(tournament.id);
+  };
+
+  const handleConfirmDelete = async () => {
+    await firebase.deleteTournament(tournamentIdToDelete);
+    setTournamentIdToDelete("");
+  };
+
+  const handleCancelDelete = () => {
+    setTournamentIdToDelete("");
   };
 
   return (
     <>
+      <DeleteDialog
+        open={tournamentIdToDelete.length > 0}
+        onAccept={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
       <Paper className={classes.paper}>
         <TextField
           fullWidth
@@ -91,7 +106,7 @@ const TournamentListView = () => {
               <InputAdornment position="start">
                 <SearchIcon />
               </InputAdornment>
-            )
+            ),
           }}
           onChange={event => setSearchText(event.target.value)}
         />
