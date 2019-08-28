@@ -8,6 +8,7 @@ import {
   ListItemText,
   IconButton,
   Paper,
+  Theme,
 } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
 import { Tournament } from "../../types";
@@ -16,12 +17,12 @@ import StandingsIcon from "../StandingsIcon";
 import { makeStyles } from "@material-ui/styles";
 import { buildData } from "./mapTournamentsToData";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
   infoSection: {
-    padding: 35,
     textAlign: "center",
+    padding: theme.spacing(2),
   },
-});
+}));
 
 const Dashboard = () => {
   const firebase = useContext(FirebaseContext);
@@ -32,13 +33,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     return firebase.fetchAllTournaments(tournaments => {
-      const [userTournaments, matchesWon, matchesLost] = buildData(
-        tournaments,
-        firebase.getCurrentUser()
-      );
-      setUserTournaments(userTournaments);
-      setMatchesWon(matchesWon);
-      setMatchesLost(matchesLost);
+      const currentUser = firebase.getCurrentUser()
+      if(currentUser) {
+        const [userTournaments, matchesWon, matchesLost] = buildData(
+          tournaments,
+          currentUser
+        );
+        setUserTournaments(userTournaments);
+        setMatchesWon(matchesWon);
+        setMatchesLost(matchesLost);
+      }
     });
   }, []);
 

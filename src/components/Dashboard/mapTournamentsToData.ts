@@ -3,16 +3,15 @@ import { User } from "firebase";
 
 export const buildData = (
   tournaments: Tournament[],
-  user: User | null
+  user: User
 ): [Tournament[], number, number] => {
-  if (!user) return [[], 0, 0];
   const userTournaments = getUserTournaments(tournaments, user);
   const userMatches = getUserMatches(tournaments, user);
   const [matchesWon, matchesLost] = getMatchesStats(userMatches, user);
   return [userTournaments, matchesWon, matchesLost];
 };
 
-const getUserTournaments = (tournaments: Tournament[], user: User) => {
+const getUserTournaments = (tournaments: Tournament[], user: User): Tournament[] => {
   return tournaments.filter(t =>
     t.schedule.some(md =>
       md.matches.some(m =>
@@ -22,13 +21,13 @@ const getUserTournaments = (tournaments: Tournament[], user: User) => {
   );
 };
 
-const getUserMatches = (tournaments: Tournament[], user: User) => {
+const getUserMatches = (tournaments: Tournament[], user: User): Match[] => {
   return tournaments
     .flatMap(t => t.schedule.flatMap(md => md.matches))
     .filter(m => m.teams.some(t => t.members.some(m => m.id === user.uid)));
 };
 
-const getMatchesStats = (userMatches: Match[], user: User) => {
+const getMatchesStats = (userMatches: Match[], user: User): [number, number] => {
   return userMatches.reduce(
     ([won, lost], match) => {
       const userTeam = match.teams.find(t =>
