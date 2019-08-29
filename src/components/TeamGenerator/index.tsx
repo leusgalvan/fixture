@@ -49,6 +49,11 @@ const useStyles = makeStyles(theme => ({
   save: {
     margin: theme.spacing(2),
   },
+
+  usersList: {
+    overflowY: "auto",
+    maxHeight: 580,
+  },
 }));
 
 const TeamGenerator = ({ history }: RouteComponentProps) => {
@@ -127,6 +132,7 @@ const TeamGenerator = ({ history }: RouteComponentProps) => {
             </Typography>
             {!fetchingUsers ? (
               <SelectableList
+                className={classes.usersList}
                 items={userDisplayNames}
                 selectedIndexes={selectedUserIndexes}
                 onItemClicked={onUserClicked}
