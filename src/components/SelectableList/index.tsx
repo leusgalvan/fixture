@@ -13,17 +13,19 @@ interface SelectableListProps {
   items?: React.ReactNode[];
   selectedIndexes?: number[];
   onItemClicked?: (index: number) => void;
+  className?: string;
 }
 
 const SelectableList = ({
   items = [],
   selectedIndexes = [],
-  onItemClicked = () => {}
+  onItemClicked = () => {},
+  className
 }: SelectableListProps) => {
   const isSelected = (i: number) => selectedIndexes.includes(i);
 
   return items && items.length > 0 ? (
-    <List component="div" disablePadding>
+    <List component="div" disablePadding className={className}>
       {items.map((item, i) => (
         <ListItem
           button
