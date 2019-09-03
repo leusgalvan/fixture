@@ -8,7 +8,7 @@ import {
   ListItemText,
   IconButton,
   Paper,
-  Theme,
+  Theme
 } from "@material-ui/core";
 import { FirebaseContext } from "../Firebase";
 import { Tournament } from "../../types";
@@ -16,12 +16,13 @@ import { Link } from "react-router-dom";
 import StandingsIcon from "../StandingsIcon";
 import { makeStyles } from "@material-ui/styles";
 import { buildData } from "./mapTournamentsToData";
+import EmptyFeedbackImage from "../Common/EmptyFeedbackImage";
 
 const useStyles = makeStyles((theme: Theme) => ({
   infoSection: {
     textAlign: "center",
-    padding: theme.spacing(2),
-  },
+    padding: theme.spacing(2)
+  }
 }));
 
 const Dashboard = () => {
@@ -33,8 +34,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     return firebase.fetchAllTournaments(tournaments => {
-      const currentUser = firebase.getCurrentUser()
-      if(currentUser) {
+      const currentUser = firebase.getCurrentUser();
+      if (currentUser) {
         const [userTournaments, matchesWon, matchesLost] = buildData(
           tournaments,
           currentUser
@@ -54,14 +55,14 @@ const Dashboard = () => {
         breakpoint: 480,
         options: {
           chart: {
-            width: 200,
+            width: 200
           },
           legend: {
-            position: "bottom",
-          },
-        },
-      },
-    ],
+            position: "bottom"
+          }
+        }
+      }
+    ]
   };
   const series = [matchesWon, matchesLost];
 
@@ -72,33 +73,44 @@ const Dashboard = () => {
           Personal dashboard
         </Typography>
       </Grid>
-      <Grid item xs={6}>
-        <Paper className={classes.infoSection}>
-          <Typography variant="h3">Your tournaments</Typography>
-          <List>
-            {userTournaments.map(t => {
-              return (
-                <ListItem key={t.id} button>
-                  <ListItemText primary={t.name} />
-                  <IconButton
-                    edge="end"
-                    component={Link}
-                    to={`/standings/${t.id}`}
-                  >
-                    <StandingsIcon />
-                  </IconButton>
-                </ListItem>
-              );
-            })}
-          </List>
-        </Paper>
-      </Grid>
-      <Grid item xs={6}>
-        <Paper className={classes.infoSection}>
-          <Typography variant="h3">Your stats</Typography>
-          <Chart options={options} series={series} type="pie" width="500" />
-        </Paper>
-      </Grid>
+      {userTournaments.length > 0 ? (
+        <>
+          <Grid item xs={6}>
+            <Paper className={classes.infoSection}>
+              <Typography variant="h3">Your tournaments</Typography>
+              <List>
+                {userTournaments.map(t => {
+                  return (
+                    <ListItem key={t.id} button>
+                      <ListItemText primary={t.name} />
+                      <IconButton
+                        edge="end"
+                        component={Link}
+                        to={`/standings/${t.id}`}
+                      >
+                        <StandingsIcon />
+                      </IconButton>
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </Paper>
+          </Grid>
+          <Grid item xs={6}>
+            <Paper className={classes.infoSection}>
+              <Typography variant="h3">Your stats</Typography>
+              <Chart options={options} series={series} type="pie" width="500" />
+            </Paper>
+          </Grid>
+        </>
+      ) : (
+        <Grid item xs={12}>
+          <Paper className={classes.infoSection}>
+            <EmptyFeedbackImage />
+            <Typography variant="h6">You should start playing!</Typography>
+          </Paper>
+        </Grid>
+      )}
     </Grid>
   );
 };
