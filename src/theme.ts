@@ -13,6 +13,11 @@ const expandedTheme = {
   ...customTheme,
   status: {
     danger: "orange"
+  },
+  darkMode: {
+    backgroundColor: "#3e3340",
+    auxColor: "#856c89",
+    linkColor: "#161417"
   }
 };
 

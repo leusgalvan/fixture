@@ -1,15 +1,18 @@
 import React, { useContext, useCallback, useState } from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { Link, withRouter } from "react-router-dom";
-import { AppContext } from "../../state";
+import { AppContext, AppActions } from "../../state";
 import { IconButton, Menu, MenuItem, Avatar } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import InvertColors from "@material-ui/icons/InvertColors";
 import { RouteChildrenProps } from "react-router";
 import { FirebaseContext } from "../Firebase";
+import { Theme } from "../../theme";
+import DarkMode from "./DarkMode";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,7 +39,7 @@ const NavBar = ({ history }: RouteChildrenProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
 
-  const { user } = useContext(AppContext);
+  const { user, isDarkModeEnabled, dispatch } = useContext(AppContext);
 
   const handleProfileMenuOpen = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
@@ -60,6 +63,7 @@ const NavBar = ({ history }: RouteChildrenProps) => {
 
   return (
     <div className={classes.root}>
+      {isDarkModeEnabled && <DarkMode />}
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
@@ -87,6 +91,12 @@ const NavBar = ({ history }: RouteChildrenProps) => {
                 className={classes.linkButtons}
               >
                 Teams
+              </Button>
+              <Button
+                onClick={() => dispatch({ type: AppActions.TOGGLE_DARK_MODE })}
+                className={classes.linkButtons}
+              >
+                <InvertColors />
               </Button>
               <IconButton
                 edge="end"

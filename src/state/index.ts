@@ -8,12 +8,14 @@ interface AppState {
   user: User | null;
   generatedTeams: Team[];
   dispatch: React.Dispatch<Action>;
+  isDarkModeEnabled: boolean;
 }
 
 export const initialState = {
   user: null,
   generatedTeams: [],
   dispatch: () => {},
+  isDarkModeEnabled: false
 };
 
 export const AppContext = React.createContext<AppState>(initialState);
@@ -35,6 +37,11 @@ export const reducerApp = (state: AppState, action: Action) => {
         ...state,
         generatedTeams: [],
       };
+      case AppActions.TOGGLE_DARK_MODE:
+        return {
+          ...state,
+          isDarkModeEnabled: !state.isDarkModeEnabled
+        };
     default:
       return state;
   }
