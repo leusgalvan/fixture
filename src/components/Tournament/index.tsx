@@ -70,7 +70,7 @@ const TournamentListView = () => {
       : tournaments;
     return searchText
       ? filteredByUser.filter(tournament =>
-          tournament.name.includes(searchText)
+          tournament.name.toLowerCase().includes(searchText.toLowerCase())
         )
       : filteredByUser;
   };
