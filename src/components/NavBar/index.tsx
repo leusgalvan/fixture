@@ -10,6 +10,10 @@ import { IconButton, Menu, MenuItem, Avatar } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { RouteChildrenProps } from "react-router";
 import { FirebaseContext } from "../Firebase";
+import Media from "react-media";
+import TournamentIcon from "../TournamentIcon";
+import GroupIcon from "@material-ui/icons/Group";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,27 +71,64 @@ const NavBar = ({ history }: RouteChildrenProps) => {
           </Typography>
           {user && (
             <>
-              <Button
-                component={Link}
-                to="/mainMenu"
-                className={classes.linkButtons}
-              >
-                Home
-              </Button>
-              <Button
-                component={Link}
-                to="/tournament"
-                className={classes.linkButtons}
-              >
-                Tournaments
-              </Button>
-              <Button
-                component={Link}
-                to="/team"
-                className={classes.linkButtons}
-              >
-                Teams
-              </Button>
+              <Media query="(min-width: 640px)">
+                {matches =>
+                  matches ? (
+                    <>
+                      <Button
+                        component={Link}
+                        to="/dashboard"
+                        className={classes.linkButtons}
+                      >
+                        Dashboard
+                      </Button>
+                      <Button
+                        component={Link}
+                        to="/tournament"
+                        className={classes.linkButtons}
+                      >
+                        Tournaments
+                      </Button>
+                      <Button
+                        component={Link}
+                        to="/team"
+                        className={classes.linkButtons}
+                      >
+                        Teams
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <IconButton
+                        aria-label="dashboard"
+                        component={Link}
+                        to="/dashboard"
+                        className={classes.linkButtons}
+                      >
+                        <DashboardIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="tournaments"
+                        component={Link}
+                        to="/tournament"
+                        className={classes.linkButtons}
+                      >
+                        <TournamentIcon />
+                      </IconButton>
+
+                      <IconButton
+                        aria-label="teams"
+                        component={Link}
+                        to="/team"
+                        className={classes.linkButtons}
+                      >
+                        <GroupIcon />
+                      </IconButton>
+                    </>
+                  )
+                }
+              </Media>
+
               <IconButton
                 edge="end"
                 aria-label="account of current user"
